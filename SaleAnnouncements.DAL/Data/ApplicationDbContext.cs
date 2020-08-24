@@ -9,6 +9,8 @@ namespace SaleAnnouncements.DAL.Data
 		public DbSet<Offer> Offers { get; set; }
 		public DbSet<Message> Messages { get; set; }
 		public DbSet<Photo> Photos { get; set; }
+		public DbSet<Category> Categories { get; set; }
+		public DbSet<OfferStatus> OfferStatuses { get; set; }
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
