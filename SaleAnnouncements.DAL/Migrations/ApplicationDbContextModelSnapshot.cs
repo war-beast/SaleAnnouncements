@@ -347,9 +347,6 @@ namespace SaleAnnouncements.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Ext")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 

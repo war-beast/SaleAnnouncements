@@ -10,7 +10,7 @@ using SaleAnnouncements.DAL.Data;
 namespace SaleAnnouncements.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200824161049_v_02")]
+    [Migration("20200824170113_v_02")]
     partial class v_02
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -348,9 +348,6 @@ namespace SaleAnnouncements.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Ext")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");

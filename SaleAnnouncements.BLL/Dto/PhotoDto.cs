@@ -2,16 +2,12 @@
 
 namespace SaleAnnouncements.BLL.Dto
 {
-	public class PhotoDto
+	public class PhotoDto : DtoBase
 	{
-		public Guid Id { get; set; }
-
-		public string FileName { get; set; }
+		public string FileName { get; set; } = string.Empty;
 
 		public Guid OfferId { get; set; }
 
-		public string Ext { get; set; }
-
-		public OfferDto Offer { get; set; }
+		public OfferDto Offer { get; set; } = new OfferDto();
 	}
 }

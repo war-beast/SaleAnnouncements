@@ -8,8 +8,6 @@ namespace SaleAnnouncements.DAL.Entities
 
 		public Guid OfferId { get; set; }
 
-		public string Ext { get; set; }
-
 		#region navigation
 
 		public Offer Offer { get; set; }

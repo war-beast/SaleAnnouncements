@@ -7,6 +7,10 @@ namespace SaleAnnouncements.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "Ext",
+                table: "Photos");
+
             migrationBuilder.AddColumn<DateTime>(
                 name: "CreationDate",
                 table: "OffersStatusesMaps",
@@ -19,6 +23,12 @@ namespace SaleAnnouncements.DAL.Migrations
             migrationBuilder.DropColumn(
                 name: "CreationDate",
                 table: "OffersStatusesMaps");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Ext",
+                table: "Photos",
+                type: "nvarchar(max)",
+                nullable: true);
         }
     }
 }

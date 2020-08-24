@@ -3,10 +3,8 @@ using SaleAnnouncements.DAL.Entities;
 
 namespace SaleAnnouncements.BLL.Dto
 {
-	public class OfferStatusMapDto
+	public class OfferStatusMapDto : DtoBase
 	{
-		public Guid Id { get; set; }
-
 		public Guid OfferId { get; set; }
 
 		public Guid StatusId { get; set; }

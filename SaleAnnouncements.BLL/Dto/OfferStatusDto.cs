@@ -2,10 +2,8 @@
 
 namespace SaleAnnouncements.BLL.Dto
 {
-	public class OfferStatusDto
+	public class OfferStatusDto : DtoBase
 	{
-		public Guid Id { get; set; }
-
 		public string Name { get; set; } = string.Empty;
 
 		/// <summary>

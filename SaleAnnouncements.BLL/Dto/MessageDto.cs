@@ -2,10 +2,8 @@
 
 namespace SaleAnnouncements.BLL.Dto
 {
-	public class MessageDto
+	public class MessageDto : DtoBase
 	{
-		public Guid Id { get; set; }
-
 		public string Subject { get; set; } = string.Empty;
 
 		public string Description { get; set; } = string.Empty;
