@@ -19,6 +19,7 @@ namespace SaleAnnouncements.DAL.Repositories
 		private OfferRepository _offerRepository;
 		private OfferStatusesRepository _offerStatusesRepository;
 		private PhotoRepository _photoRepository;
+		private OffersStatusesMapRepository _offersStatusesMapRepository;
 
 		private bool disposed = false;
 
@@ -45,6 +46,8 @@ namespace SaleAnnouncements.DAL.Repositories
 		public IRepository<OfferStatus> OfferStatuses => _offerStatusesRepository ??= new OfferStatusesRepository(_db);
 
 		public IRepository<Photo> Photos => _photoRepository ??= new PhotoRepository(_db);
+
+		public IRepository<OffersStatusesMap> OffersStatusesMaps => _offersStatusesMapRepository ??= new OffersStatusesMapRepository(_db);
 
 		public async Task SaveAsync()
 		{

@@ -1,8 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-	<Nullable>enable</Nullable>
     <UserSecretsId>aspnet-SaleAnnouncements-8FC02693-4DDD-4FB4-9373-94CC7BE15917</UserSecretsId>
   </PropertyGroup>
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaleAnnouncements.DAL.Entities
 {
@@ -16,5 +17,7 @@ namespace SaleAnnouncements.DAL.Entities
 		/// </summary>
 		[Column(TypeName = "decimal(18, 2)")]
 		public decimal Price { get; set; }
+
+		public IEnumerable<OffersStatusesMap> OffersStatuses { get; set; }
 	}
 }

@@ -10,7 +10,7 @@ using SaleAnnouncements.DAL.Data;
 namespace SaleAnnouncements.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200824092258_v_01")]
+    [Migration("20200824134648_v_01")]
     partial class v_01
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,7 +167,7 @@ namespace SaleAnnouncements.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("SaleAnnouncements.DAL.Entities.Customer", b =>
@@ -311,17 +311,33 @@ namespace SaleAnnouncements.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("OfferId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("Id");
 
+                    b.ToTable("OfferStatuses");
+                });
+
+            modelBuilder.Entity("SaleAnnouncements.DAL.Entities.OffersStatusesMap", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OfferId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StatusId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("OfferId");
 
-                    b.ToTable("OfferStatus");
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("OffersStatusesMaps");
                 });
 
             modelBuilder.Entity("SaleAnnouncements.DAL.Entities.Photo", b =>
@@ -329,6 +345,9 @@ namespace SaleAnnouncements.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Ext")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
@@ -416,11 +435,19 @@ namespace SaleAnnouncements.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SaleAnnouncements.DAL.Entities.OfferStatus", b =>
+            modelBuilder.Entity("SaleAnnouncements.DAL.Entities.OffersStatusesMap", b =>
                 {
-                    b.HasOne("SaleAnnouncements.DAL.Entities.Offer", null)
-                        .WithMany("Statuses")
-                        .HasForeignKey("OfferId");
+                    b.HasOne("SaleAnnouncements.DAL.Entities.Offer", "Offer")
+                        .WithMany("OffersStatuses")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SaleAnnouncements.DAL.Entities.OfferStatus", "Status")
+                        .WithMany("OffersStatuses")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SaleAnnouncements.DAL.Entities.Photo", b =>

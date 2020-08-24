@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SaleAnnouncements.BLL.Interfaces;
+using SaleAnnouncements.BLL.Services;
 using SaleAnnouncements.DAL.Interfaces;
 using SaleAnnouncements.DAL.Repositories;
 
@@ -16,11 +18,12 @@ namespace SaleAnnouncements
 
 			#region businesslogic level
 
-			
+			services.AddTransient<ICategoryService, CategoryService>();
+			services.AddTransient<IOfferStatusService, OfferStatusService>();
 
 			#endregion
 
-			#region presentation layer
+			#region presentation level
 
 
 

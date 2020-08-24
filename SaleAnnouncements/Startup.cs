@@ -38,7 +38,7 @@ namespace SaleAnnouncements
 				options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 			})
 				.AddEntityFrameworkStores<ApplicationDbContext>();
-			services.AddControllersWithViews().AddNewtonsoftJson();
+			services.AddControllersWithViews();
 			services.AddRazorPages();
 
 			services.AddAutoMapper(typeof(Startup));

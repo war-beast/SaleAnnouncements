@@ -15,6 +15,8 @@ namespace SaleAnnouncements.DAL.Interfaces
 
 		IRepository<Photo> Photos { get; }
 
+		IRepository<OffersStatusesMap> OffersStatusesMaps { get; }
+
 		Task SaveAsync();
 	}
 }

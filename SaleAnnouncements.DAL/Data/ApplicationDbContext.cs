@@ -11,6 +11,7 @@ namespace SaleAnnouncements.DAL.Data
 		public DbSet<Photo> Photos { get; set; }
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<OfferStatus> OfferStatuses { get; set; }
+		public DbSet<OffersStatusesMap> OffersStatusesMaps { get; set; }
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
@@ -39,6 +40,21 @@ namespace SaleAnnouncements.DAL.Data
 				.WithOne(x => x.Offer)
 				.HasForeignKey(x => x.OfferId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Offer>()
+				.HasOne(x => x.Category)
+				.WithMany(x => x.Offers)
+				.HasForeignKey(x => x.CategoryId);
+
+			modelBuilder.Entity<OffersStatusesMap>()
+				.HasOne(x => x.Offer)
+				.WithMany(x => x.OffersStatuses)
+				.HasForeignKey(x => x.OfferId);
+
+			modelBuilder.Entity<OffersStatusesMap>()
+				.HasOne(x => x.Status)
+				.WithMany(x => x.OffersStatuses)
+				.HasForeignKey(x => x.StatusId);
 		}
 	}
 }

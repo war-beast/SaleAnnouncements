@@ -15,7 +15,7 @@ namespace SaleAnnouncements.DAL.Entities
 
 		public Guid CategoryId { get; set; }
 
-		public IEnumerable<OfferStatus> Statuses { get; set; }
+		public IEnumerable<OffersStatusesMap> OffersStatuses { get; set; }
 
 		/// <summary>
 		/// Положение объявления в списке. Вычисляется в зависимости от купленных статусов и истечения их срока.

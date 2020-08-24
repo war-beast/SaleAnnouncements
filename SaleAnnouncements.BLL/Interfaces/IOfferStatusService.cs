@@ -2,7 +2,7 @@
 
 namespace SaleAnnouncements.BLL.Interfaces
 {
-	public interface ICategoryService : IListingProcessing<CategoryDto>
+	public interface IOfferStatusService : IListingProcessing<OfferStatusDto>
 	{
 	}
 }
