@@ -1,26 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SaleAnnouncements.Models;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using SaleAnnouncements.BLL.Interfaces;
 
 namespace SaleAnnouncements.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
+		#region private members
 
-		public HomeController(ILogger<HomeController> logger)
+		private readonly ILogger<HomeController> _logger;
+		private readonly IHomePageService _homePageService;
+
+		#endregion
+
+		#region constructor
+
+		public HomeController(ILogger<HomeController> logger, IHomePageService homePageService)
 		{
-			_logger = logger;
+			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			_homePageService = homePageService ?? throw new ArgumentNullException(nameof(homePageService));
 		}
 
-		public IActionResult Index()
+		#endregion
+
+
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			var model = await _homePageService.GetPageModel();
+			return View(model);
 		}
 
 		public IActionResult Privacy()

@@ -1,0 +1,8 @@
+﻿@model IReadOnlyCollection<SaleAnnouncements.BLL.Dto.CategoryDto>
+
+<div class="dropdown-menu">
+	@foreach (var category in Model)
+	{
+		<a class="dropdown-item" href="#">@category.Name</a>
+	}
+</div>

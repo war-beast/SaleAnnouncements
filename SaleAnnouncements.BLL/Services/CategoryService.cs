@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -30,7 +31,7 @@ namespace SaleAnnouncements.BLL.Services
 		public async Task<IReadOnlyCollection<CategoryDto>> GetAll()
 		{
 			var categories = _unitOfWork.Categories.GetAll();
-			return await Task.Run(() => _mapper.Map<List<CategoryDto>>(categories));
+			return await Task.Run(() => _mapper.Map<List<CategoryDto>>(categories.OrderBy(x => x.Name)));
 		}
 
 		public async Task<CategoryDto> Get(Guid id) =>
