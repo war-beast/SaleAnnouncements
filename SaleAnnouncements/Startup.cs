@@ -1,3 +1,4 @@
+using System.IO;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,9 +16,17 @@ namespace SaleAnnouncements
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
+
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile("custom.json", true, true);
+
+			CustomConfiguration = builder.Build();
 		}
 
 		public IConfiguration Configuration { get; }
+
+		public IConfiguration CustomConfiguration { get; }
 
 		public void ConfigureServices(IServiceCollection services)
 		{

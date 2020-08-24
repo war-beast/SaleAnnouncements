@@ -14,5 +14,7 @@ namespace SaleAnnouncements.BLL.Dto
 		public Offer Offer { get; set; } = new Offer();
 
 		public OfferStatus Status { get; set; } = new OfferStatus();
+
+		public DateTime CreationDate { get; set; }
 	}
 }

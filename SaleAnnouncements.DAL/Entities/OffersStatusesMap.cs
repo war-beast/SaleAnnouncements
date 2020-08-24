@@ -8,6 +8,8 @@ namespace SaleAnnouncements.DAL.Entities
 
 		public Guid StatusId { get; set; }
 
+		public DateTime CreationDate { get; set; }
+
 		#region navigation properties
 
 		public Offer Offer { get; set; }
