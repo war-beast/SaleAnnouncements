@@ -39,6 +39,7 @@ namespace SaleAnnouncements.DAL.Repositories
 
 			#endregion
 
+			item.Id = Guid.NewGuid();
 			_db.Categories.Add(item);
 		}
 

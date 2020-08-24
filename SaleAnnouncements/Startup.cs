@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using SaleAnnouncements.DAL.Entities;
 
 namespace SaleAnnouncements
 {
-	public class Startup
+	public partial class Startup
 	{
 		public Startup(IConfiguration configuration)
 		{
@@ -37,8 +38,13 @@ namespace SaleAnnouncements
 				options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 			})
 				.AddEntityFrameworkStores<ApplicationDbContext>();
-			services.AddControllersWithViews();
+			services.AddControllersWithViews().AddNewtonsoftJson();
 			services.AddRazorPages();
+
+			services.AddAutoMapper(typeof(Startup));
+
+			ConfigureAutomapper(services);
+			ConfigureCustomServices(services);
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
