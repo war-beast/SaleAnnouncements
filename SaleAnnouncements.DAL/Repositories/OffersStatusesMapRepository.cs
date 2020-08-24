@@ -21,15 +21,20 @@ namespace SaleAnnouncements.DAL.Repositories
 		public async Task<OffersStatusesMap> Get(Guid id)
 		{
 			return await _db.OffersStatusesMaps
+				.Include(x => x.Offer)
+				.Include(x => x.Status)
 				.FirstAsync(x => x.Id.Equals(id));
 		}
 
 		public IQueryable<OffersStatusesMap> GetAll()
 		{
-			return _db.OffersStatusesMaps.AsNoTracking();
+			return _db.OffersStatusesMaps
+				.Include(x => x.Offer)
+				.Include(x => x.Status)
+				.AsNoTracking();
 		}
 
-		public void Create(OffersStatusesMap item)
+		public Guid Create(OffersStatusesMap item)
 		{
 			#region validation
 
@@ -40,6 +45,8 @@ namespace SaleAnnouncements.DAL.Repositories
 
 			item.Id = Guid.NewGuid();
 			_db.OffersStatusesMaps.Add(item);
+
+			return item.Id;
 		}
 
 		public void Update(OffersStatusesMap item)

@@ -27,10 +27,12 @@ namespace SaleAnnouncements.DAL.Repositories
 
 		public IQueryable<Category> GetAll()
 		{
-			return _db.Categories.AsNoTracking();
+			return _db.Categories
+				.Include(x => x.Offers)
+				.AsNoTracking();
 		}
 
-		public void Create(Category item)
+		public Guid Create(Category item)
 		{
 			#region validation
 
@@ -41,6 +43,8 @@ namespace SaleAnnouncements.DAL.Repositories
 
 			item.Id = Guid.NewGuid();
 			_db.Categories.Add(item);
+
+			return item.Id;
 		}
 
 		public void Update(Category item)

@@ -25,11 +25,11 @@ namespace SaleAnnouncements.BLL.Services
 
 		#endregion
 
-		public async Task<HomePageModel> GetPageModel()
+		public async Task<HomeViewModel> GetPageModel()
 		{
 			var categories = await _categoryService.GetAll();
 
-			return new HomePageModel
+			return new HomeViewModel
 			{
 				Categories = categories.OrderBy(x => x.Name).ToList(),
 				Offers = new List<OfferDto>()

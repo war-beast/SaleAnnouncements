@@ -29,7 +29,7 @@ namespace SaleAnnouncements.DAL.Repositories
 			return _db.Photos.AsNoTracking();
 		}
 
-		public void Create(Photo item)
+		public Guid Create(Photo item)
 		{
 			#region validation
 
@@ -40,6 +40,8 @@ namespace SaleAnnouncements.DAL.Repositories
 
 			item.Id = Guid.NewGuid();
 			_db.Photos.Add(item);
+
+			return item.Id;
 		}
 
 		public void Update(Photo item)

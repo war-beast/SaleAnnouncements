@@ -5,6 +5,6 @@ namespace SaleAnnouncements.BLL.Interfaces
 {
 	public interface IHomePageService
 	{
-		Task<HomePageModel> GetPageModel();
+		Task<HomeViewModel> GetPageModel();
 	}
 }

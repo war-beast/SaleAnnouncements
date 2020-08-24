@@ -21,15 +21,24 @@ namespace SaleAnnouncements.DAL.Repositories
 		public async Task<Offer> Get(Guid id)
 		{
 			return await _db.Offers
+				.Include(x => x.Customer)
+				.Include(x => x.OffersStatuses)
+				.Include(x => x.Photos)
+				.Include(x => x.Category)
 				.FirstAsync(x => x.Id.Equals(id));
 		}
 
 		public IQueryable<Offer> GetAll()
 		{
-			return _db.Offers.AsNoTracking();
+			return _db.Offers
+				.Include(x => x.Customer)
+				.Include(x => x.OffersStatuses)
+				.Include(x => x.Photos)
+				.Include(x => x.Category)
+				.AsNoTracking();
 		}
 
-		public void Create(Offer item)
+		public Guid Create(Offer item)
 		{
 			#region validation
 
@@ -43,6 +52,8 @@ namespace SaleAnnouncements.DAL.Repositories
 			item.UpdateDate = DateTime.Now;
 
 			_db.Offers.Add(item);
+
+			return item.Id;
 		}
 
 		public void Update(Offer item)

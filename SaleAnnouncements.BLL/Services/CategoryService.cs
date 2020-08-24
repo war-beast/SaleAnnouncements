@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using SaleAnnouncements.BLL.Dto;
 using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.DAL.Entities;
 using SaleAnnouncements.DAL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SaleAnnouncements.BLL.Services
 {

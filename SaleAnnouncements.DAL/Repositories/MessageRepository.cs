@@ -29,7 +29,7 @@ namespace SaleAnnouncements.DAL.Repositories
 			return _db.Messages.AsNoTracking();
 		}
 
-		public void Create(Message item)
+		public Guid Create(Message item)
 		{
 			#region validation
 
@@ -40,6 +40,8 @@ namespace SaleAnnouncements.DAL.Repositories
 
 			item.Id = Guid.NewGuid();
 			_db.Messages.Add(item);
+
+			return item.Id;
 		}
 
 		public void Update(Message item)

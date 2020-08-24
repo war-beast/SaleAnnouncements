@@ -10,7 +10,12 @@ namespace SaleAnnouncements.DAL.Interfaces
 
 		IQueryable<T> GetAll();
 
-		void Create(T item);
+		/// <summary>
+		/// Создание новой записи
+		/// </summary>
+		/// <param name="item">Объект</param>
+		/// <returns>ИД созданной записи</returns>
+		Guid Create(T item);
 
 		void Update(T item);
 
