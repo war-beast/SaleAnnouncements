@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using SaleAnnouncements.DAL.Data;
 using SaleAnnouncements.Util;
 using System.IO;
+using System.Net;
 
 namespace SaleAnnouncements
 {
@@ -54,10 +55,8 @@ namespace SaleAnnouncements
 				options.User.RequireUniqueEmail = true;
 				options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 			})
-				.AddEntityFrameworkStores<ApplicationDbContext>()
+				.AddEntityFrameworkStores<IdentityContext>()
 				.AddErrorDescriber<CustomIdentityErrorDescriber>();
-
-
 
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
@@ -107,6 +106,7 @@ namespace SaleAnnouncements
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+			app.UseJwtCookie();
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
@@ -114,6 +114,20 @@ namespace SaleAnnouncements
 
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+			app.UseStatusCodePages(async context =>
+			{
+				var response = context.HttpContext.Response;
+
+				var isNotApiRequest = !context.HttpContext.Request.Path.StartsWithSegments("/api");
+				var forbidden = response.StatusCode == (int)HttpStatusCode.Forbidden;
+				var unauthorized = response.StatusCode == (int)HttpStatusCode.Unauthorized;
+
+				if (isNotApiRequest && (unauthorized || forbidden))
+				{
+					response.Redirect("/Identity/Account/SignIn");
+				}
+			});
 
 			app.UseEndpoints(endpoints =>
 			{

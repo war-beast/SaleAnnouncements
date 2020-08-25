@@ -35,7 +35,7 @@
 		"webpack-merge": "^4.2.2"
 	},
 	"scripts": {
-		"webpack-script": "webpack --config webpack.prod.js"
+		"webpack-script": "webpack --config webpack.dev.js"
 	},
 	"-vs-binding": {
 		"BeforeBuild": [

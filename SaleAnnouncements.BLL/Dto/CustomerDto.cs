@@ -1,16 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SaleAnnouncements.BLL.Dto
 {
-	public class CustomerDto
+	public class CustomerDto : DtoBase
 	{
-		public string Id { get; set; } = string.Empty;
-
-		public string UserName { get; set; } = string.Empty;
-
-		public string Email { get; set; } = string.Empty;
-
-		public bool EmailConfirmed { get; set; } = false;
+		public string UserId { get; set; } = string.Empty;
 
 		public IEnumerable<OfferDto> SalesOffers { get; set; } = new List<OfferDto>();
 

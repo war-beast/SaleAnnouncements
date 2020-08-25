@@ -4,7 +4,7 @@
 			<form v-bind:class="{ 'was-validated': !formValid }">
 				<h4>Создание нового аккаунта <span class="text-muted">(все поля заполнить обязательно)</span></h4>
 				<hr />
-				<div class="text-danger" v-if="loginError != ''">{{registerError}}</div>
+				<div class="text-danger" v-if="registerError != ''">{{registerError}}</div>
 				<div class="form-group">
 					<label for="emailField">Email</label>
 					<input id="emailField" class="form-control" required="" type="email" v-model="email" />

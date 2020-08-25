@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.Models;
 
 namespace SaleAnnouncements.Controllers
@@ -23,16 +24,19 @@ namespace SaleAnnouncements.Controllers
 
 		private readonly UserManager<IdentityUser> _userManager;
 		private readonly SignInManager<IdentityUser> _signManager;
+		private readonly ICustomerService _customerService;
 
 		#endregion
 
 		#region constructor
 
 		public ApiAccountController(UserManager<IdentityUser> userManager,
-			SignInManager<IdentityUser> signManager)
+			SignInManager<IdentityUser> signManager, 
+			ICustomerService customerService)
 		{
 			_userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 			_signManager = signManager ?? throw new ArgumentNullException(nameof(signManager));
+			_customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
 		}
 
 		#endregion
@@ -53,7 +57,7 @@ namespace SaleAnnouncements.Controllers
 
 			if (!ModelState.IsValid)
 			{
-				var errors = ModelState.Values.Select(x => x.Errors)?.First().Select(x => x.ErrorMessage);
+				var errors = ModelState.Values.Select(x => x.Errors).First().Select(x => x.ErrorMessage);
 				await Response.WriteAsync(JsonConvert.SerializeObject(errors, new JsonSerializerSettings { Formatting = Formatting.Indented }));
 				return;
 			}
@@ -68,13 +72,15 @@ namespace SaleAnnouncements.Controllers
 
 			if (!result.Succeeded)
 			{
-				//Из коллекции ошибок исключаем дублирвоание имени, т.к. имя и email пользователя совпадают в БД
+				//Из коллекции ошибок исключаем дублирование имени, т.к. имя и email пользователя совпадают в БД
 				var errors = result.Errors
 					.Where(x => !x.Code.Equals("DuplicateUserName", StringComparison.InvariantCultureIgnoreCase))
 					.Select(x => x.Description);
 				await Response.WriteAsync(JsonConvert.SerializeObject(errors, new JsonSerializerSettings { Formatting = Formatting.Indented }));
 				return;
 			}
+
+			await _customerService.Create(user.Id);
 
 			Response.StatusCode = 200;
 			return;
@@ -144,7 +150,6 @@ namespace SaleAnnouncements.Controllers
 
 			#endregion
 
-			var userRoles = await _userManager.GetRolesAsync(user);
 			var result = await _signManager.PasswordSignInAsync(email, password, isPersistent, false);
 
 			if (!result.Succeeded)

@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.BLL.Services;
-using SaleAnnouncements.DAL.Entities;
 using SaleAnnouncements.DAL.Interfaces;
 using SaleAnnouncements.DAL.Repositories;
-using SaleAnnouncements.Util;
 
 namespace SaleAnnouncements
 {
@@ -25,6 +21,7 @@ namespace SaleAnnouncements
 			services.AddTransient<ICategoryService, CategoryService>();
 			services.AddTransient<IOfferStatusService, OfferStatusService>();
 			services.AddTransient<IOfferService, OfferService>();
+			services.AddTransient<ICustomerService, CustomerService>();
 
 			#endregion
 

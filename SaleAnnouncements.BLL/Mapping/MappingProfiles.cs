@@ -9,6 +9,9 @@ namespace SaleAnnouncements.BLL.Mapping
 	{
 		public MappingProfiles()
 		{
+			CreateMap<CustomerDto, Customer>();
+			CreateMap<Customer, CustomerDto>();
+
 			CreateMap<CategoryDto, Category>();
 			CreateMap<Category, CategoryDto>();
 
