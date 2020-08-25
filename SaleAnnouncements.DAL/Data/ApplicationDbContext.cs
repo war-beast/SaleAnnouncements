@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using SaleAnnouncements.DAL.Entities;
 
 namespace SaleAnnouncements.DAL.Data
 {
-	public sealed class ApplicationDbContext : IdentityDbContext<Customer>
+	public sealed class ApplicationDbContext : DbContext
 	{
 		public DbSet<Offer> Offers { get; set; }
 		public DbSet<Message> Messages { get; set; }
@@ -55,6 +57,21 @@ namespace SaleAnnouncements.DAL.Data
 				.HasOne(x => x.Status)
 				.WithMany(x => x.OffersStatuses)
 				.HasForeignKey(x => x.StatusId);
+		}
+	}
+
+	public class ApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+	{
+		ApplicationDbContext IDesignTimeDbContextFactory<ApplicationDbContext>.CreateDbContext(string[] args)
+		{
+			var config = new ConfigurationBuilder()
+				.SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
+				.AddJsonFile("appsettings.json", optional: true).Build();
+
+			var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+			optionsBuilder.UseSqlServer((string) config.GetConnectionString("DefaultConnection"));
+
+			return new ApplicationDbContext(optionsBuilder.Options);
 		}
 	}
 }

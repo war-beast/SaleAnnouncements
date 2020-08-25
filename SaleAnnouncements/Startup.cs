@@ -1,13 +1,16 @@
-using System.IO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using SaleAnnouncements.DAL.Data;
-using SaleAnnouncements.DAL.Entities;
+using SaleAnnouncements.Util;
+using System.IO;
 
 namespace SaleAnnouncements
 {
@@ -30,10 +33,15 @@ namespace SaleAnnouncements
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+			services.AddDbContext<IdentityContext>(options =>
+				options.UseSqlServer(connectionString));
+
 			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(
-					Configuration.GetConnectionString("DefaultConnection")));
-			services.AddDefaultIdentity<Customer>(options =>
+				options.UseSqlServer(connectionString));
+
+			services.AddDefaultIdentity<IdentityUser>(options =>
 			{
 				options.SignIn.RequireConfirmedAccount = false;
 				options.SignIn.RequireConfirmedEmail = false;
@@ -46,7 +54,37 @@ namespace SaleAnnouncements
 				options.User.RequireUniqueEmail = true;
 				options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 			})
-				.AddEntityFrameworkStores<ApplicationDbContext>();
+				.AddEntityFrameworkStores<ApplicationDbContext>()
+				.AddErrorDescriber<CustomIdentityErrorDescriber>();
+
+
+
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(options =>
+				{
+					options.RequireHttpsMetadata = true;
+					options.TokenValidationParameters = new TokenValidationParameters
+					{
+						// укзывает, будет ли валидироваться издатель при валидации токена
+						ValidateIssuer = true,
+						// строка, представляющая издателя
+						ValidIssuer = AuthOptions.ISSUER,
+
+						// будет ли валидироваться потребитель токена
+						ValidateAudience = true,
+						// установка потребителя токена
+						ValidAudience = AuthOptions.AUDIENCE,
+						// будет ли валидироваться время существования
+						ValidateLifetime = true,
+
+						// установка ключа безопасности
+						IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+						// валидация ключа безопасности
+						ValidateIssuerSigningKey = true
+					};
+					options.SaveToken = true;
+				});
+
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 

@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.BLL.Services;
+using SaleAnnouncements.DAL.Entities;
 using SaleAnnouncements.DAL.Interfaces;
 using SaleAnnouncements.DAL.Repositories;
+using SaleAnnouncements.Util;
 
 namespace SaleAnnouncements
 {

@@ -12,7 +12,7 @@ namespace SaleAnnouncements.DAL.Entities
 
 		public IEnumerable<Photo> Photos { get; set; }
 
-		public string CustomerId { get; set; }
+		public Guid CustomerId { get; set; }
 
 		public Guid CategoryId { get; set; }
 

@@ -39,7 +39,7 @@ namespace SaleAnnouncements.BLL.Services
 			return _mapper.Map<List<OfferDto>>(offers.ToList());
 		}
 
-		public async Task<IReadOnlyCollection<OfferDto>> GetForUser(string id)
+		public async Task<IReadOnlyCollection<OfferDto>> GetForUser(Guid id)
 		{
 			var offers = await Task.Run(() => _unitOfWork.Offers
 				.GetAll()

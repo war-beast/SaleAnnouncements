@@ -8,7 +8,7 @@ namespace SaleAnnouncements.DAL.Entities
 
 		public string Description { get; set; }
 
-		public string CustomerId { get; set; }
+		public Guid CustomerId { get; set; }
 
 		/// <summary>
 		/// ID собеседника

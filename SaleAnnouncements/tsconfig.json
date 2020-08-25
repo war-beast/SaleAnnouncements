@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"module": "ES2015",
+		"moduleResolution": "node",
+		"target": "es6",
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"sourceMap": true,
+		"experimentalDecorators": true,
+		"strictPropertyInitialization": false,
+		"baseUrl": "./Src/",
+		"paths": {
+			"Models/*": [ "models/*" ],
+			"Exceptions/*": [ "exceptions/*" ],
+			"Util/*": [ "util/*" ],
+			"Interfaces/*": [ "interfaces/*" ],
+			"Modules/*": [ "modules/*" ],
+			"Pages/*":  ["pages/*"] 
+		}
+	},
+	"exclude": [
+		"node_modules"
+	]
+}
