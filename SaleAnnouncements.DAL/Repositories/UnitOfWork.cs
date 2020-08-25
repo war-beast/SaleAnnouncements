@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SaleAnnouncements.DAL.Data;
 using SaleAnnouncements.DAL.Entities;
 using SaleAnnouncements.DAL.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace SaleAnnouncements.DAL.Repositories
 {
@@ -20,6 +18,7 @@ namespace SaleAnnouncements.DAL.Repositories
 		private OfferStatusesRepository _offerStatusesRepository;
 		private PhotoRepository _photoRepository;
 		private OffersStatusesMapRepository _offersStatusesMapRepository;
+		private CustomerRepository _customerRepository;
 
 		private bool disposed = false;
 
@@ -48,6 +47,8 @@ namespace SaleAnnouncements.DAL.Repositories
 		public IRepository<Photo> Photos => _photoRepository ??= new PhotoRepository(_db);
 
 		public IRepository<OffersStatusesMap> OffersStatusesMaps => _offersStatusesMapRepository ??= new OffersStatusesMapRepository(_db);
+
+		public IRepository<Customer> Customers => _customerRepository ??= new CustomerRepository(_db);
 
 		public async Task SaveAsync()
 		{

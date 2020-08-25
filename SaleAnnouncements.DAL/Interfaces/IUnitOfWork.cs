@@ -17,6 +17,8 @@ namespace SaleAnnouncements.DAL.Interfaces
 
 		IRepository<OffersStatusesMap> OffersStatusesMaps { get; }
 
+		IRepository<Customer> Customers { get; }
+
 		Task SaveAsync();
 	}
 }

@@ -15,6 +15,8 @@ namespace SaleAnnouncements.DAL.Data
 		public DbSet<OfferStatus> OfferStatuses { get; set; }
 		public DbSet<OffersStatusesMap> OffersStatusesMaps { get; set; }
 
+		public DbSet<Customer> Customers { get; set; }
+
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
 		{
