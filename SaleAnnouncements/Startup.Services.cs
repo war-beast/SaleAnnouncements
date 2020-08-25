@@ -20,6 +20,7 @@ namespace SaleAnnouncements
 
 			services.AddTransient<ICategoryService, CategoryService>();
 			services.AddTransient<IOfferStatusService, OfferStatusService>();
+			services.AddTransient<IOfferService, OfferService>();
 
 			#endregion
 

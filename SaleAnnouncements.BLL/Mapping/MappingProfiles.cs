@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SaleAnnouncements.BLL.Dto;
+using SaleAnnouncements.BLL.Model;
 using SaleAnnouncements.DAL.Entities;
 
 namespace SaleAnnouncements.BLL.Mapping
@@ -28,6 +29,13 @@ namespace SaleAnnouncements.BLL.Mapping
 
 			CreateMap<OfferStatusDto, OfferStatus>();
 			CreateMap<OfferStatus, OfferStatusDto>();
+
+			#region MyRegion
+			
+			CreateMap<OfferDto, OfferBindingModel>();
+			CreateMap<OfferBindingModel, OfferDto>();
+
+			#endregion
 		}
 	}
 }

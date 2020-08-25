@@ -10,6 +10,8 @@ namespace SaleAnnouncements.BLL.Interfaces
 	{
 		Task<IReadOnlyCollection<OfferDto>> GetByCategory(Guid categoryId);
 
+		Task<IReadOnlyCollection<OfferDto>> GetForUser(string id);
+
 		Task<Result> Create(OfferDto offer);
 
 		Task<OfferDto> Get(Guid id);

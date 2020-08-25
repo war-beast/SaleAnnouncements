@@ -30,11 +30,21 @@ namespace SaleAnnouncements.BLL.Services
 
 		public async Task<IReadOnlyCollection<OfferDto>> GetByCategory(Guid categoryId)
 		{
-			var offers = _unitOfWork.Offers
+			var offers = await Task.Run(() => _unitOfWork.Offers
 				.GetAll()
 				.Where(x => x.CategoryId == categoryId)
 				.OrderByDescending(x =>x.Sort)
-				.ThenByDescending(x => x.CreationDate);
+				.ThenByDescending(x => x.CreationDate));
+
+			return _mapper.Map<List<OfferDto>>(offers.ToList());
+		}
+
+		public async Task<IReadOnlyCollection<OfferDto>> GetForUser(string id)
+		{
+			var offers = await Task.Run(() => _unitOfWork.Offers
+				.GetAll()
+				.Where(x => x.CustomerId == id)
+				.OrderByDescending(x => x.CreationDate));
 
 			return _mapper.Map<List<OfferDto>>(offers.ToList());
 		}

@@ -7,6 +7,8 @@ namespace SaleAnnouncements.BLL.Model
 {
 	public class OfferBindingModel
 	{
+		public Guid? Id { get; set; }
+
 		[Required]
 		public string Title { get; set; } = string.Empty;
 
@@ -30,5 +32,9 @@ namespace SaleAnnouncements.BLL.Model
 		public DateTime UpdateDate { get; set; }
 
 		public CategoryDto Category { get; set; } = new CategoryDto();
+
+		public decimal Price { get; set; }
+
+		public string PhoneNumber { get; set; } = string.Empty;
 	}
 }

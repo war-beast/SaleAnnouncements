@@ -24,5 +24,9 @@ namespace SaleAnnouncements.BLL.Dto
 		public DateTime UpdateDate { get; set; }
 
 		public CategoryDto Category { get; set; } = new CategoryDto();
+
+		public decimal Price { get; set; }
+
+		public string PhoneNumber { get; set; } = string.Empty;
 	}
 }

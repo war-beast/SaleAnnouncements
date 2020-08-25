@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaleAnnouncements.DAL.Entities
 {
@@ -25,6 +26,14 @@ namespace SaleAnnouncements.DAL.Entities
 		public DateTime CreationDate { get; set; }
 
 		public DateTime UpdateDate { get; set; }
+
+		[Column(TypeName = "decimal(18, 2)")]
+		public decimal Price { get; set; }
+
+		/// <summary>
+		/// Разрешаем пользователю указывать разные номера телефонов в разных объявлениях
+		/// </summary>
+		public string PhoneNumber { get; set; }
 
 		#region navigation
 
