@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Src\components\profile\newOffer.ts" />
+    <None Remove="Src\models\offer.ts" />
+    <None Remove="Src\pages\profile\newOffer.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.7" />
@@ -27,6 +33,12 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Photo\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Src\components\profile\newOffer.ts" />
+    <TypeScriptCompile Include="Src\models\offer.ts" />
+    <TypeScriptCompile Include="Src\pages\profile\newOffer.ts" />
   </ItemGroup>
 
 </Project>
