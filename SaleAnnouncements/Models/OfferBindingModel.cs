@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 using SaleAnnouncements.BLL.Dto;
 
-namespace SaleAnnouncements.BLL.Model
+namespace SaleAnnouncements.Models
 {
 	public class OfferBindingModel
 	{
@@ -15,26 +16,17 @@ namespace SaleAnnouncements.BLL.Model
 		[Required]
 		public string Description { get; set; } = string.Empty;
 
-		public IEnumerable<PhotoDto> Photos { get; set; } = new List<PhotoDto>();
-
-		[Required]
-		public string CustomerId { get; set; } = string.Empty;
+		public IEnumerable<IFormFile> Photos { get; set; }
 
 		[Required]
 		public Guid CategoryId { get; set; }
 
 		public IEnumerable<OfferStatusMapDto> OffersStatuses { get; set; } = new List<OfferStatusMapDto>();
 
-		public int Sort { get; set; } = 0;
-
-		public DateTime CreationDate { get; set; }
-
-		public DateTime UpdateDate { get; set; }
-
-		public CategoryDto Category { get; set; } = new CategoryDto();
-
+		[Required]
 		public decimal Price { get; set; }
 
+		[Required]
 		public string PhoneNumber { get; set; } = string.Empty;
 	}
 }

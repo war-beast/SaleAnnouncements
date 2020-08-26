@@ -32,12 +32,27 @@ export default class ApiRequest {
             });
         });
     }
+    postMultipartData(url, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return axios.post(url, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${this.token}`
+                }
+            })
+                .then((result) => {
+                return new ApiResult(true, result.data);
+            }).catch((error) => {
+                return this.getErrorResult(error, url);
+            });
+        });
+    }
     sendGetRequest(url) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield axios.get(url, {
                 headers: {
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + this.token
+                    "Authorization": `Bearer ${this.token}`
                 }
             }).then((result) => {
                 return new ApiResult(true, result.data);
@@ -52,7 +67,7 @@ export default class ApiRequest {
                 headers: {
                     "Accept": "application/json",
                     "Content-type": "application/json;charset=utf-8",
-                    "Authorization": "Bearer " + this.token
+                    "Authorization": `Bearer ${this.token}`
                 }
             }).then((result) => {
                 var res = new ApiResult(true, result.data);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using SaleAnnouncements.BLL.Mapping;
+using SaleAnnouncements.Mapping;
 
 namespace SaleAnnouncements
 {
@@ -10,6 +11,7 @@ namespace SaleAnnouncements
 		{
 			var config = new MapperConfiguration(cfg => {
 				cfg.AddProfile(new MappingProfiles());
+				cfg.AddProfile(new PresentationMappingProfiles());
 			});
 
 			IMapper mapper = config.CreateMapper();

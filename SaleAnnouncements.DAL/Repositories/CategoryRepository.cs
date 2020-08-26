@@ -28,7 +28,6 @@ namespace SaleAnnouncements.DAL.Repositories
 		public IQueryable<Category> GetAll()
 		{
 			return _db.Categories
-				.Include(x => x.Offers)
 				.AsNoTracking();
 		}
 
