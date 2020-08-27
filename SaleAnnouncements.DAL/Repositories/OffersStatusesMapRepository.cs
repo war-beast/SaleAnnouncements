@@ -44,6 +44,7 @@ namespace SaleAnnouncements.DAL.Repositories
 			#endregion
 
 			item.Id = Guid.NewGuid();
+			item.CreationDate = DateTime.Now;
 			_db.OffersStatusesMaps.Add(item);
 
 			return item.Id;

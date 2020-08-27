@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SaleAnnouncements.BLL.Dto;
@@ -28,7 +29,9 @@ namespace SaleAnnouncements.BLL.Services
 
 		public async Task<IReadOnlyCollection<OfferStatusDto>> GetAll()
 		{
-			var statuses = _unitOfWork.OfferStatuses.GetAll();
+			var statuses = _unitOfWork.OfferStatuses
+				.GetAll()
+				.OrderBy(x => x.Price);
 			return await Task.Run(() => _mapper.Map<List<OfferStatusDto>>(statuses));
 		}
 
@@ -45,6 +48,24 @@ namespace SaleAnnouncements.BLL.Services
 			}
 
 			await _unitOfWork.SaveAsync();
+		}
+
+		public void SetStatusForOffer(Guid offerId, IEnumerable<Guid> statusIds)
+		{
+			var ids = statusIds.ToList();
+			if(ids.Count == 0)
+				return;
+
+			var offerStatuses = ids.Select(x => new OffersStatusesMap
+			{
+				OfferId = offerId,
+				StatusId = x
+			});
+
+			foreach (var offerStatus in offerStatuses)
+			{
+				_unitOfWork.OffersStatusesMaps.Create(offerStatus);
+			}
 		}
 	}
 }

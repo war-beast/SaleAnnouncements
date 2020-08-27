@@ -30,6 +30,7 @@ let NewOfferComponent = class NewOfferComponent extends Vue {
         this.categories = [];
         this.statuses = [];
         this.selectedCategoryId = null;
+        this.paidStatus = [];
         this.offer = new OfferModel("", "", 0, "");
         this.apiRequest = new ApiRequest();
         setTimeout(() => {
@@ -58,25 +59,36 @@ let NewOfferComponent = class NewOfferComponent extends Vue {
     }
     submit() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.creationError = "";
-            this.successMessage = "";
             this.formValid = this.checkValidation();
             if (!this.formValid) {
                 this.creationError = "Проверьте правильность заполнени формы";
                 this.creationInProcess = false;
                 return;
             }
+            this.sendOffer(this.buildFormData());
+        });
+    }
+    buildFormData() {
+        let formData = new FormData();
+        for (let i = 0; i < this.photos.length; i++) {
+            formData.append(`photos`, this.photos[i]);
+        }
+        for (let i = 0; i < this.paidStatus.length; i++) {
+            formData.append(`selectedStatusIds`, this.paidStatus[i]);
+        }
+        this.offer.setPhotoFiles(this.photos);
+        formData.append(`title`, this.offer.title);
+        formData.append(`description`, this.offer.description);
+        formData.append(`categoryId`, this.selectedCategoryId);
+        formData.append(`price`, this.offer.price.toString().replace(".", ","));
+        formData.append(`phoneNumber`, this.offer.phoneNumber);
+        return formData;
+    }
+    sendOffer(formData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.creationError = "";
+            this.successMessage = "";
             this.creationInProcess = true;
-            let formData = new FormData();
-            for (let i = 0; i < this.photos.length; i++) {
-                formData.append(`photos`, this.photos[i]);
-            }
-            this.offer.setPhotoFiles(this.photos);
-            formData.append(`title`, this.offer.title);
-            formData.append(`description`, this.offer.description);
-            formData.append(`categoryId`, this.selectedCategoryId);
-            formData.append(`phoneNumber`, this.offer.phoneNumber);
-            formData.append(`price`, this.offer.price.toString().replace(".", ","));
             yield this.apiRequest.postMultipartData(createOfferUrl, formData)
                 .then((result) => {
                 if (result.success) {
@@ -85,6 +97,7 @@ let NewOfferComponent = class NewOfferComponent extends Vue {
                         this.successMessage = `Объявление "${this.offer.title}" сохранено успешно!`;
                         this.offer = new OfferModel("", "", 0, "");
                         this.photos = [];
+                        this.paidStatus = [];
                     }
                     else {
                         this.creationError = resultData.error;
@@ -121,6 +134,15 @@ let NewOfferComponent = class NewOfferComponent extends Vue {
                     console.log(`Ошибка загрузки данных по url: ${statusesUrl}`);
                 }
             });
+        });
+    }
+    totalAmount() {
+        var selectedStatuses = this.getSelectedStatuses();
+        return selectedStatuses.reduce((sum, item) => sum + item.price, 0);
+    }
+    getSelectedStatuses() {
+        return this.statuses.filter((item) => {
+            return this.paidStatus.indexOf(item.id) !== -1;
         });
     }
 };

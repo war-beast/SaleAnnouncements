@@ -24,6 +24,7 @@ export default class NewOfferComponent extends Vue {
 	private statuses: Array<Status> = [];
 
 	private selectedCategoryId: string | null = null;
+	private paidStatus: Array<string> = [];
 
 	constructor() {
 		super();
@@ -61,8 +62,6 @@ export default class NewOfferComponent extends Vue {
 	}
 
 	private async submit() {
-		this.creationError = "";
-		this.successMessage = "";
 		this.formValid = this.checkValidation();
 
 		if (!this.formValid) {
@@ -71,19 +70,34 @@ export default class NewOfferComponent extends Vue {
 			return;
 		}
 
-		this.creationInProcess = true;
+		this.sendOffer(this.buildFormData());
+	}
+
+	private buildFormData(): FormData {
 		let formData = new FormData();
 
 		for (let i = 0; i < this.photos.length; i++) {
 			formData.append(`photos`, this.photos[i]);
 		}
 
+		for (let i = 0; i < this.paidStatus.length; i++) {
+			formData.append(`selectedStatusIds`, this.paidStatus[i]);
+		}
+
 		this.offer.setPhotoFiles(this.photos);
 		formData.append(`title`, this.offer.title);
 		formData.append(`description`, this.offer.description);
 		formData.append(`categoryId`, this.selectedCategoryId);
-		formData.append(`phoneNumber`, this.offer.phoneNumber);
 		formData.append(`price`, this.offer.price.toString().replace(".", ","));
+		formData.append(`phoneNumber`, this.offer.phoneNumber);
+
+		return formData;
+	}
+
+	private async sendOffer(formData: FormData) {
+		this.creationError = "";
+		this.successMessage = "";
+		this.creationInProcess = true;
 
 		await this.apiRequest.postMultipartData(createOfferUrl, formData)
 			.then((result: ApiResult) => {
@@ -94,6 +108,7 @@ export default class NewOfferComponent extends Vue {
 						this.successMessage = `Объявление "${this.offer.title}" сохранено успешно!`;
 						this.offer = new OfferModel("", "", 0, "");
 						this.photos = [];
+						this.paidStatus = [];
 					} else {
 						this.creationError = resultData.error;
 					}
@@ -125,5 +140,17 @@ export default class NewOfferComponent extends Vue {
 					console.log(`Ошибка загрузки данных по url: ${statusesUrl}`);
 				}
 			});
+	}
+
+	private totalAmount(): number {
+		var selectedStatuses = this.getSelectedStatuses();
+
+		return selectedStatuses.reduce((sum, item) => sum + item.price, 0);
+	}
+
+	private getSelectedStatuses(): Array<Status> {
+		return this.statuses.filter((item) => {
+			return this.paidStatus.indexOf(item.id) !== -1;
+		});
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SaleAnnouncements.BLL.Dto;
 using SaleAnnouncements.BLL.Interfaces;
@@ -21,22 +20,22 @@ namespace SaleAnnouncements.BLL.Services
 		private readonly IMapper _mapper;
 		private readonly ILogger<OfferService> _logger;
 		private readonly ICustomerService _customerService;
-		private readonly IPhotoService _photoService;
+		private readonly IOfferStatusService _offerStatusService;
 
 		#endregion
 
 		#region constructor
 
-		public OfferService(IUnitOfWork unitOfWork, 
-			IMapper mapper, 
+		public OfferService(IUnitOfWork unitOfWork,
+			IMapper mapper,
 			ILogger<OfferService> logger,
 			ICustomerService customerService, 
-			IPhotoService photoService) : base(unitOfWork)
+			IOfferStatusService offerStatusService) : base(unitOfWork)
 		{
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			_customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
-			_photoService = photoService ?? throw new ArgumentNullException(nameof(photoService));
+			_offerStatusService = offerStatusService ?? throw new ArgumentNullException(nameof(customerService));
 		}
 
 		#endregion
@@ -46,7 +45,7 @@ namespace SaleAnnouncements.BLL.Services
 			var offers = await Task.Run(() => _unitOfWork.Offers
 				.GetAll()
 				.Where(x => x.CategoryId == categoryId)
-				.OrderByDescending(x =>x.Sort)
+				.OrderByDescending(x => x.Sort)
 				.ThenByDescending(x => x.CreationDate));
 
 			return _mapper.Map<List<OfferDto>>(offers.ToList());
@@ -69,30 +68,27 @@ namespace SaleAnnouncements.BLL.Services
 				IsSuccess = true
 			};
 
-			var customersFilter = new CustomerFilterBuilder()
-				.SetEmail(userEmail)
-				.Build();
-			var customer = await _customerService.GetFiltered(customersFilter);
-
-			if (customer.Count == 0)
-			{
-				var message = $"Не удалось получить пользователя по Email: {userEmail}";
-
-				_logger.LogError(message);
-
-				return new Result
-				{
-					IsSuccess = false,
-					EntityId = Guid.Empty,
-					Error = message
-				};
-			}
-
-			offer.CustomerId = customer.First().Id!.Value;
+			offer.CustomerId = await GetCurrentUserId(userEmail);
+			var selectedStatusAmounts = _unitOfWork.OfferStatuses
+				.GetAll()
+				.Where(x => offer.SelectedStatusIds.Contains(x.Id))
+				.Select(x => x.Amount)
+				.ToList();
 
 			try
 			{
 				result.EntityId = _unitOfWork.Offers.Create(_mapper.Map<Offer>(offer));
+
+				//Сохраняем в БД маппинги объявление-статусы
+				if(offer.SelectedStatusIds.Any())
+					_offerStatusService.SetStatusForOffer(result.EntityId, offer.SelectedStatusIds);
+
+				//Корректируем величину, отвечающую за изменение позиции объявления в списках, в зависимости от установленных статусов
+				foreach (var amount in selectedStatusAmounts)
+				{
+					offer.Sort += (int) amount;
+				}
+
 				await _unitOfWork.SaveAsync();
 			}
 			catch (Exception exc)
@@ -143,5 +139,34 @@ namespace SaleAnnouncements.BLL.Services
 
 			return result;
 		}
+
+		#region private methods
+
+		private async Task<Guid> GetCurrentUserId(string email)
+		{
+			#region validation
+
+			if(string.IsNullOrWhiteSpace(email))
+				throw new ArgumentNullException(nameof(email));
+
+			#endregion
+
+			var customersFilter = new CustomerFilterBuilder()
+				.SetEmail(email)
+				.Build();
+			var customer = await _customerService.GetFiltered(customersFilter);
+
+			if (customer.Count == 0)
+			{
+				var message = $"Не удалось получить пользователя по Email: {email}";
+
+				_logger.LogError(message);
+				throw new InvalidOperationException(message);
+			}
+
+			return customer.First().Id!.Value;
+		}
+
+		#endregion
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using SaleAnnouncements.DAL.Entities;
 
 namespace SaleAnnouncements.BLL.Dto
 {
@@ -9,9 +8,9 @@ namespace SaleAnnouncements.BLL.Dto
 
 		public Guid StatusId { get; set; }
 
-		public Offer Offer { get; set; } = new Offer();
+		public OfferDto Offer { get; set; } = new OfferDto();
 
-		public OfferStatus Status { get; set; } = new OfferStatus();
+		public OfferStatusDto Status { get; set; } = new OfferStatusDto();
 
 		public DateTime CreationDate { get; set; }
 	}

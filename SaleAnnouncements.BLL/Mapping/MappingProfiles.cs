@@ -29,8 +29,8 @@ namespace SaleAnnouncements.BLL.Mapping
 			CreateMap<PhotoDto, Photo>();
 			CreateMap<Photo, PhotoDto>();
 
-			CreateMap<OfferStatusDto, OfferStatus>();
-			CreateMap<OfferStatus, OfferStatusDto>();
+			CreateMap<OffersStatusesMap, OfferStatusMapDto>();
+			CreateMap<OfferStatusMapDto, OffersStatusesMap>();
 
 			#region presentation level
 			

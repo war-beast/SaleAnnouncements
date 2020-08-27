@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 using SaleAnnouncements.BLL.Dto;
 
 namespace SaleAnnouncements.Models
@@ -21,7 +21,7 @@ namespace SaleAnnouncements.Models
 		[Required]
 		public Guid CategoryId { get; set; }
 
-		public IEnumerable<OfferStatusMapDto> OffersStatuses { get; set; } = new List<OfferStatusMapDto>();
+		public IEnumerable<Guid> SelectedStatusIds { get; set; } = new List<Guid>();
 
 		[Required]
 		public decimal Price { get; set; }
