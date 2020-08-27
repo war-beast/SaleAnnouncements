@@ -14,7 +14,7 @@
 	{
 		<div class="card mb-4">
 			<div class="card-header">
-				@offer.Title
+				@offer.Category.Name &gt; @offer.Title
 			</div>
 			<div class="card-body d-flex justify-content-between px-2">
 				<div class="image-slider align-items-center">
@@ -28,7 +28,7 @@
 							//Здесь реализован просмотр полноразмерной версии фото. Реализовано через JQuery только из-за простоты и меньшего объёма кода.
 							//На реальном проекте я бы сделал это на VueJS
 							<a asp-controller="Common" asp-action="GetPhoto" asp-route-id="@image.Id" class="dialog mx-1 my-1">
-								<img src="data:image/jpeg;base64,@(Convert.ToBase64String(image.Image))"/>
+								<img src="data:image/jpeg;base64,@(Convert.ToBase64String(image.Image))" />
 							</a>
 						}
 					}
@@ -46,6 +46,20 @@
 					<button class="btn btn-outline-primary" type="button" role="button">Обновить</button>
 					<button class="btn btn-outline-danger mt-2" type="button" role="button">Удалить</button>
 				</div>
+			</div>
+			<div class="card-footer">
+				Статусы:
+				@if (offer.OffersStatuses.Any())
+				{
+					@foreach (var status in offer.OffersStatuses)
+					{
+						<span class="badge badge-success">@status.Status.Name</span>
+					}
+				}
+				else
+				{
+					@: нет
+				}
 			</div>
 		</div>
 	}

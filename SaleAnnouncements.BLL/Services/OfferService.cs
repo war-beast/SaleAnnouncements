@@ -21,6 +21,7 @@ namespace SaleAnnouncements.BLL.Services
 		private readonly ILogger<OfferService> _logger;
 		private readonly ICustomerService _customerService;
 		private readonly IOfferStatusService _offerStatusService;
+		private readonly ICategoryService _categoryService;
 
 		#endregion
 
@@ -29,13 +30,15 @@ namespace SaleAnnouncements.BLL.Services
 		public OfferService(IUnitOfWork unitOfWork,
 			IMapper mapper,
 			ILogger<OfferService> logger,
-			ICustomerService customerService, 
-			IOfferStatusService offerStatusService) : base(unitOfWork)
+			ICustomerService customerService,
+			IOfferStatusService offerStatusService,
+			ICategoryService categoryService) : base(unitOfWork)
 		{
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			_customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
 			_offerStatusService = offerStatusService ?? throw new ArgumentNullException(nameof(customerService));
+			_categoryService = categoryService ?? throw new ArgumentNullException(nameof(customerService));
 		}
 
 		#endregion
@@ -58,7 +61,9 @@ namespace SaleAnnouncements.BLL.Services
 				.Where(x => x.CustomerId == id)
 				.OrderByDescending(x => x.CreationDate));
 
-			return _mapper.Map<List<OfferDto>>(offers.ToList());
+			
+			return await GetOffersWithCategory(_mapper.Map<List<OfferDto>>(offers))
+				.ToListAsync();
 		}
 
 		public async Task<Result> Create(OfferDto offer, string userEmail)
@@ -80,13 +85,13 @@ namespace SaleAnnouncements.BLL.Services
 				result.EntityId = _unitOfWork.Offers.Create(_mapper.Map<Offer>(offer));
 
 				//Сохраняем в БД маппинги объявление-статусы
-				if(offer.SelectedStatusIds.Any())
+				if (offer.SelectedStatusIds.Any())
 					_offerStatusService.SetStatusForOffer(result.EntityId, offer.SelectedStatusIds);
 
 				//Корректируем величину, отвечающую за изменение позиции объявления в списках, в зависимости от установленных статусов
 				foreach (var amount in selectedStatusAmounts)
 				{
-					offer.Sort += (int) amount;
+					offer.Sort += (int)amount;
 				}
 
 				await _unitOfWork.SaveAsync();
@@ -146,7 +151,7 @@ namespace SaleAnnouncements.BLL.Services
 		{
 			#region validation
 
-			if(string.IsNullOrWhiteSpace(email))
+			if (string.IsNullOrWhiteSpace(email))
 				throw new ArgumentNullException(nameof(email));
 
 			#endregion
@@ -165,6 +170,16 @@ namespace SaleAnnouncements.BLL.Services
 			}
 
 			return customer.First().Id!.Value;
+		}
+
+		private async IAsyncEnumerable<OfferDto> GetOffersWithCategory(IList<OfferDto> offers)
+		{
+			foreach (var offer in offers)
+			{
+				offer.Category = await _categoryService.Get(offer.CategoryId);
+				offer.OffersStatuses = await _offerStatusService.GetOfferStatusMaps(offer.Id!.Value);
+				yield return offer;
+			}
 		}
 
 		#endregion

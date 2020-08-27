@@ -67,5 +67,15 @@ namespace SaleAnnouncements.BLL.Services
 				_unitOfWork.OffersStatusesMaps.Create(offerStatus);
 			}
 		}
+
+		public async Task<IEnumerable<OfferStatusMapDto>> GetOfferStatusMaps(Guid offerId)
+		{
+			var offerStatuses = _unitOfWork.OffersStatusesMaps
+				.GetAll()
+				.Where(x => x.OfferId == offerId);
+
+			return await Task.Run(() => 
+				_mapper.Map<IEnumerable<OfferStatusMapDto>>(offerStatuses));
+		}
 	}
 }

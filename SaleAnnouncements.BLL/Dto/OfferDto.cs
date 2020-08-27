@@ -17,7 +17,7 @@ namespace SaleAnnouncements.BLL.Dto
 
 		public IEnumerable<OfferStatusMapDto> OffersStatuses { get; set; } = new List<OfferStatusMapDto>(); 
 		
-		public IEnumerable<Guid> SelectedStatusIds { get; set; } = new List<Guid>();
+		public ICollection<Guid> SelectedStatusIds { get; set; } = new List<Guid>();
 
 		public int Sort { get; set; } = 0;
 

@@ -40,7 +40,7 @@ namespace SaleAnnouncements.Controllers
 				.Build();
 			var customers = await _customerService.GetFiltered(customersFilter);
 
-			var model =await _offerService.GetForUser(customers.First().Id!.Value);
+			var model = await _offerService.GetForUser(customers.First().Id!.Value);
 			return View(model);
 		}
 
