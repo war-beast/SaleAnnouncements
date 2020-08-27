@@ -19,11 +19,13 @@ import { Action, Getter } from "vuex-class";
 import ApiRequest from "Util/request";
 import Cookies from "cookies-ts";
 const logoutUrl = "/api/account/logout";
+const userInfoUrl = "/api/account/getLogin";
 let ProfileWidget = class ProfileWidget extends Vue {
     constructor() {
         super();
         this.name = "profile-widget";
         this.apiRequest = new ApiRequest();
+        setTimeout(() => this.checkLoggedStatus(), 0);
     }
     logOut() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -32,6 +34,16 @@ let ProfileWidget = class ProfileWidget extends Vue {
                 if (result.success) {
                     const cookies = new Cookies();
                     cookies.remove(globalAccessToken);
+                    this.logUserOut();
+                }
+            });
+        });
+    }
+    checkLoggedStatus() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.apiRequest.getData(logoutUrl)
+                .then((result) => {
+                if (!result.success) {
                     this.logUserOut();
                 }
             });

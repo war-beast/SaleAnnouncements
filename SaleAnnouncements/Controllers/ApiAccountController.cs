@@ -49,6 +49,13 @@ namespace SaleAnnouncements.Controllers
 			return Ok();
 		}
 
+		[Route("getLogin")]
+		public async Task<IActionResult> GetLogin()
+		{
+			await _signManager.SignInAsync(await _userManager.FindByEmailAsync(User.Identity.Name), true);
+			return Ok(User.Identity.Name);
+		}
+
 		[AllowAnonymous]
 		[Route("register")]
 		public async Task Register([FromBody] RegisterBindingModel model)

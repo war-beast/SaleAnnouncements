@@ -84,6 +84,7 @@ let NewOfferComponent = class NewOfferComponent extends Vue {
                     if (resultData.isSuccess) {
                         this.successMessage = `Объявление "${this.offer.title}" сохранено успешно!`;
                         this.offer = new OfferModel("", "", 0, "");
+                        this.photos = [];
                     }
                     else {
                         this.creationError = resultData.error;
