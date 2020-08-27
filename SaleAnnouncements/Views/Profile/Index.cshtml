@@ -1,9 +1,56 @@
-﻿@{
+﻿@using System.Globalization
+
+@model IReadOnlyCollection<OfferDto>
+
+@{
 	Layout = "_ProfileLayout";
 	ViewData["Title"] = "Личный кабинет";
 }
 
 <h2 class="h2">Мои объявления</h2>
+
+<div class="d-flex flex-column">
+	@foreach (var offer in Model)
+	{
+		<div class="card mb-4">
+			<div class="card-header">
+				@offer.Title
+			</div>
+			<div class="card-body d-flex justify-content-between px-2">
+				<div class="image-slider align-items-center">
+					@{
+						var images = offer.Photos.Where(x => x.Image != null);
+					}
+					@foreach (var image in images)
+					{
+						if (image.Image != null)
+						{
+							//Здесь реализован просмотр полноразмерной версии фото. Реализовано через JQuery только из-за простоты и меньшего объёма кода.
+							//На реальном проекте я бы сделал это на VueJS
+							<a asp-controller="Common" asp-action="GetPhoto" asp-route-id="@image.Id" class="dialog mx-1 my-1">
+								<img src="data:image/jpeg;base64,@(Convert.ToBase64String(image.Image))"/>
+							</a>
+						}
+					}
+				</div>
+				<blockquote class="blockquote mb-0 mx-2">
+					<p>@offer.Description</p>
+					<p>Цена: @offer.Price.ToString(CultureInfo.CurrentCulture)</p>
+					<p>Телефон: @offer.PhoneNumber</p>
+					<footer class="text-muted small">
+						Создано: <cite title="Source Title">@offer.CreationDate.ToShortDateString()</cite>,
+						Обновлено: <cite title="Source Title">@offer.UpdateDate.ToShortDateString()</cite>
+					</footer>
+				</blockquote>
+				<div class="d-flex flex-column justify-content-center">
+					<button class="btn btn-outline-primary" type="button" role="button">Обновить</button>
+					<button class="btn btn-outline-danger mt-2" type="button" role="button">Удалить</button>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
 <div id="vue-app-container">
 
 </div>

@@ -4,6 +4,7 @@ using SaleAnnouncements.DAL.Interfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 using Microsoft.EntityFrameworkCore;
 
 namespace SaleAnnouncements.DAL.Repositories
@@ -20,8 +21,8 @@ namespace SaleAnnouncements.DAL.Repositories
 
 		public async Task<Offer> Get(Guid id)
 		{
-			//Фотографии загрузим отдельно
 			return await _db.Offers
+				.Include(x => x.Photos)
 				.Include(x => x.OffersStatuses)
 				.FirstAsync(x => x.Id.Equals(id));
 		}
@@ -29,6 +30,7 @@ namespace SaleAnnouncements.DAL.Repositories
 		public IQueryable<Offer> GetAll()
 		{
 			return _db.Offers
+				.Include(x => x.Photos)
 				.Include(x => x.OffersStatuses)
 				.AsNoTracking();
 		}

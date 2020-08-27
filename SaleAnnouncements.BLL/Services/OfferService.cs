@@ -1,18 +1,16 @@
-﻿using SaleAnnouncements.BLL.Dto;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using SaleAnnouncements.BLL.Dto;
 using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.BLL.Model;
+using SaleAnnouncements.BLL.Model.Filters;
+using SaleAnnouncements.DAL.Entities;
+using SaleAnnouncements.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using SaleAnnouncements.BLL.Model.Filters;
-using SaleAnnouncements.DAL.Entities;
-using SaleAnnouncements.DAL.Interfaces;
 
 namespace SaleAnnouncements.BLL.Services
 {
@@ -22,8 +20,8 @@ namespace SaleAnnouncements.BLL.Services
 
 		private readonly IMapper _mapper;
 		private readonly ILogger<OfferService> _logger;
-		private readonly UserManager<IdentityUser> _userManager;
 		private readonly ICustomerService _customerService;
+		private readonly IPhotoService _photoService;
 
 		#endregion
 
@@ -31,14 +29,14 @@ namespace SaleAnnouncements.BLL.Services
 
 		public OfferService(IUnitOfWork unitOfWork, 
 			IMapper mapper, 
-			ILogger<OfferService> logger, 
-			UserManager<IdentityUser> userManager, 
-			ICustomerService customerService) : base(unitOfWork)
+			ILogger<OfferService> logger,
+			ICustomerService customerService, 
+			IPhotoService photoService) : base(unitOfWork)
 		{
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
-			_userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 			_customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+			_photoService = photoService ?? throw new ArgumentNullException(nameof(photoService));
 		}
 
 		#endregion

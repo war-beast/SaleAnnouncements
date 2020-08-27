@@ -27,7 +27,7 @@
 				</div>
 			</div>
 
-			<div class="custom-file" style="position: absolute; top: -500px">
+			<div class="custom-file">
 				<input type="file" id="files" ref="files" v-on:change="handleFilesUpload" multiple />
 				<label class="custom-file-label" for="files">Выберите фото</label>
 			</div>

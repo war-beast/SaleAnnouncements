@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,8 +6,11 @@ using Newtonsoft.Json.Serialization;
 using SaleAnnouncements.BLL.Dto;
 using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.BLL.Model;
-using SaleAnnouncements.BLL.Model.Filters;
 using SaleAnnouncements.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace SaleAnnouncements.Controllers
 {

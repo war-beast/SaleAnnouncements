@@ -37,7 +37,7 @@
 	</header>
 	<div class="container">
 		<main role="main" class="pb-3">
-				@RenderBody()
+			@RenderBody()
 		</main>
 	</div>
 
@@ -46,6 +46,26 @@
 			&copy; @(DateTime.Today.Year) - SaleAnnouncements - <a asp-area="" asp-controller="Home" asp-action="Privacy">Политика конфиденциальности</a>
 		</div>
 	</footer>
+
+	<div class="modal fade bd-example-modal-lg" id="photoModalCenter" tabindex="-1" role="dialog" aria-labelledby="photoModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Фото</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="hideModal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					...
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/bundle/vendors.bundle.js"></script>
