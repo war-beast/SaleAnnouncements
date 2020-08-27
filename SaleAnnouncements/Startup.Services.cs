@@ -22,6 +22,7 @@ namespace SaleAnnouncements
 			services.AddTransient<IOfferStatusService, OfferStatusService>();
 			services.AddTransient<IOfferService, OfferService>();
 			services.AddTransient<ICustomerService, CustomerService>();
+			services.AddTransient<IPhotoService, PhotoService>();
 
 			#endregion
 

@@ -12,16 +12,16 @@
 			</div>
 
 			<div class="form-group">
-				<label for="emailField">Название (заголовок объявления)</label>
-				<input id="emailField" class="form-control" required="" v-model="offer.title" />
+				<label for="titleField">Название (заголовок объявления)</label>
+				<input id="titleField" class="form-control" required="" v-model="offer.title" />
 				<div class="invalid-feedback">
 					Пожалуйста введите Название
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label for="passwordField">Описание</label>
-				<textarea id="passwordField" class="form-control" required="" v-model="offer.description"></textarea>
+				<label for="descriptionField">Описание</label>
+				<textarea id="descriptionField" class="form-control" required="" v-model="offer.description"></textarea>
 				<div class="invalid-feedback">
 					Пожалуйста введите описание
 				</div>
@@ -32,6 +32,7 @@
 				<label class="custom-file-label" for="files">Выберите фото</label>
 			</div>
 			<div class="d-flex flex-wrap flex-column">
+				<h4 class="h4">Обязательно добавьте минимум 1 фото</h4>
 				<div v-for="(photo, key) in photos" class="file-listing">
 					{{ photo.name }}
 					<button type="button" class="close" aria-label="Close" v-on:click="removeFile(key)" title="удалить">
@@ -44,8 +45,8 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label for="passwordField">Цена</label>
-						<input id="passwordField" class="form-control" required="" type="number" v-model="offer.price" />
+						<label for="priceField">Цена</label>
+						<input id="priceField" class="form-control" required="" type="number" v-model="offer.price" />
 						<div class="invalid-feedback">
 							Пожалуйста введите цену
 						</div>
@@ -54,8 +55,8 @@
 
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label for="passwordField">Телефон</label>
-						<input id="passwordField" class="form-control" required="" type="tel" v-model="offer.phoneNumber" />
+						<label for="phoneField">Телефон</label>
+						<input id="phoneField" class="form-control" required="" type="tel" v-model="offer.phoneNumber" />
 						<div class="invalid-feedback">
 							Пожалуйста введите телефон
 						</div>

@@ -7,11 +7,5 @@ namespace SaleAnnouncements.DAL.Entities
 		public byte[] Image { get; set; }
 
 		public Guid OfferId { get; set; }
-
-		#region navigation
-
-		public Offer Offer { get; set; }
-
-		#endregion
 	}
 }

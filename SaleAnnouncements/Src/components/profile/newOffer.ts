@@ -1,6 +1,6 @@
 ﻿import { Vue, Component } from "vue-property-decorator";
 import ApiRequest from "Util/request";
-import { ApiResult } from "Models/apiResult";
+import { ApiResult, ServerOperationResult } from "Models/apiResult";
 import { OfferModel, Category, Status } from "Models/application";
 
 const createOfferUrl = "/api/profile/addOffer";
@@ -56,7 +56,8 @@ export default class NewOfferComponent extends Vue {
 		return this.offer.title !== ""
 			&& this.offer.description !== ""
 			&& this.selectedCategoryId !== null
-			&& this.offer.phoneNumber !== "";
+			&& this.offer.phoneNumber !== ""
+			&& this.photos.length > 0;
 	}
 
 	private async submit() {
@@ -87,10 +88,17 @@ export default class NewOfferComponent extends Vue {
 		await this.apiRequest.postMultipartData(createOfferUrl, formData)
 			.then((result: ApiResult) => {
 				if (result.success) {
-					this.successMessage = `Объявление ${this.offer.title} сохранено успешно!`;
-					this.offer = new OfferModel("", "", 0, "");
+					const resultData = result.value as ServerOperationResult;
+
+					if (resultData.isSuccess) {
+						this.successMessage = `Объявление "${this.offer.title}" сохранено успешно!`;
+						this.offer = new OfferModel("", "", 0, "");
+						this.photos = [];
+					} else {
+						this.creationError = resultData.error;
+					}
 				} else {
-					this.creationError = `На сервере произошла ошибка создания объявления: ${this.offer.title}`;
+					this.creationError = `На сервере произошла ошибка создания объявления: "${this.offer.title}"`;
 				}
 
 				this.creationInProcess = false;

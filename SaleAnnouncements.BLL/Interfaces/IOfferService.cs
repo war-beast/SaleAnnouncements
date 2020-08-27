@@ -12,7 +12,7 @@ namespace SaleAnnouncements.BLL.Interfaces
 
 		Task<IReadOnlyCollection<OfferDto>> GetForUser(Guid id);
 
-		Task<Result> Create(OfferDto offer);
+		Task<Result> Create(OfferDto offer, string userEmail);
 
 		Task<OfferDto> Get(Guid id);
 

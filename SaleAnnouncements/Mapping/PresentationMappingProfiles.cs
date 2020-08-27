@@ -8,8 +8,10 @@ namespace SaleAnnouncements.Mapping
 	{
 		public PresentationMappingProfiles()
 		{
-			CreateMap<OfferDto, OfferBindingModel>();
-			CreateMap<OfferBindingModel, OfferDto>();
+			CreateMap<OfferDto, OfferBindingModel>()
+				.ForMember(x => x.Photos, opt => opt.Ignore());
+			CreateMap<OfferBindingModel, OfferDto>()
+				.ForMember(x => x.Photos, opt => opt.Ignore());
 		}
 	}
 }

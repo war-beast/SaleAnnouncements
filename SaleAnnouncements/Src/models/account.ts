@@ -25,8 +25,8 @@ export class LoginModel {
 }
 
 export class TokenResult {
-	readonly  access_token: string;
-	readonly  username: string;
+	readonly access_token: string;
+	readonly username: string;
 
 	constructor(access_token: string, username: string) {
 		this.access_token = access_token;

@@ -26,29 +26,6 @@ namespace SaleAnnouncements.DAL.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<Customer>()
-				.HasMany(x => x.Messages)
-				.WithOne(x => x.Customer)
-				.HasForeignKey(x => x.CustomerId)
-				.OnDelete(DeleteBehavior.Cascade);
-
-			modelBuilder.Entity<Customer>()
-				.HasMany(x => x.SalesOffers)
-				.WithOne(x => x.Customer)
-				.HasForeignKey(x => x.CustomerId)
-				.OnDelete(DeleteBehavior.Cascade);
-
-			modelBuilder.Entity<Offer>()
-				.HasMany(x => x.Photos)
-				.WithOne(x => x.Offer)
-				.HasForeignKey(x => x.OfferId)
-				.OnDelete(DeleteBehavior.Cascade);
-
-			modelBuilder.Entity<Offer>()
-				.HasOne(x => x.Category)
-				.WithMany(x => x.Offers)
-				.HasForeignKey(x => x.CategoryId);
-
 			modelBuilder.Entity<OffersStatusesMap>()
 				.HasOne(x => x.Offer)
 				.WithMany(x => x.OffersStatuses)

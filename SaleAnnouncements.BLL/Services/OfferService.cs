@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using SaleAnnouncements.BLL.Model.Filters;
 using SaleAnnouncements.DAL.Entities;
 using SaleAnnouncements.DAL.Interfaces;
 
@@ -16,14 +21,24 @@ namespace SaleAnnouncements.BLL.Services
 		#region private members
 
 		private readonly IMapper _mapper;
+		private readonly ILogger<OfferService> _logger;
+		private readonly UserManager<IdentityUser> _userManager;
+		private readonly ICustomerService _customerService;
 
 		#endregion
 
 		#region constructor
 
-		public OfferService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)
+		public OfferService(IUnitOfWork unitOfWork, 
+			IMapper mapper, 
+			ILogger<OfferService> logger, 
+			UserManager<IdentityUser> userManager, 
+			ICustomerService customerService) : base(unitOfWork)
 		{
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			_userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+			_customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
 		}
 
 		#endregion
@@ -49,12 +64,33 @@ namespace SaleAnnouncements.BLL.Services
 			return _mapper.Map<List<OfferDto>>(offers.ToList());
 		}
 
-		public async Task<Result> Create(OfferDto offer)
+		public async Task<Result> Create(OfferDto offer, string userEmail)
 		{
 			var result = new Result
 			{
 				IsSuccess = true
 			};
+
+			var customersFilter = new CustomerFilterBuilder()
+				.SetEmail(userEmail)
+				.Build();
+			var customer = await _customerService.GetFiltered(customersFilter);
+
+			if (customer.Count == 0)
+			{
+				var message = $"Не удалось получить пользователя по Email: {userEmail}";
+
+				_logger.LogError(message);
+
+				return new Result
+				{
+					IsSuccess = false,
+					EntityId = Guid.Empty,
+					Error = message
+				};
+			}
+
+			offer.CustomerId = customer.First().Id!.Value;
 
 			try
 			{
@@ -63,10 +99,13 @@ namespace SaleAnnouncements.BLL.Services
 			}
 			catch (Exception exc)
 			{
+				var message = $"Не удалось сохранить объявлениe: {offer.Title}.";
+
+				_logger.LogError(message);
 				result = new Result
 				{
 					IsSuccess = false,
-					Error = exc.Message,
+					Error = $"{message} {exc.Message}",
 					EntityId = Guid.Empty
 				};
 			}

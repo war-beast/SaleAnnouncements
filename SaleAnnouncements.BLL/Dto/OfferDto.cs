@@ -11,7 +11,7 @@ namespace SaleAnnouncements.BLL.Dto
 
 		public IEnumerable<PhotoDto> Photos { get; set; } = new List<PhotoDto>();
 
-		public string CustomerId { get; set; } = string.Empty;
+		public Guid CustomerId { get; set; }
 
 		public Guid CategoryId { get; set; }
 

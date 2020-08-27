@@ -4,7 +4,7 @@ namespace SaleAnnouncements.BLL.Dto
 {
 	public class PhotoDto : DtoBase
 	{
-		public string FileName { get; set; } = string.Empty;
+		public byte[]? Image { get; set; }
 
 		public Guid OfferId { get; set; }
 

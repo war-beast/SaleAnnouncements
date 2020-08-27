@@ -19,11 +19,5 @@ namespace SaleAnnouncements.DAL.Entities
 		/// ID первого сообщения в диалоге
 		/// </summary>
 		public Guid? ParentId { get; set; }
-
-		#region navigation
-
-		public Customer Customer { get; set; }
-
-		#endregion
 	}
 }

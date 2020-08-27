@@ -34,13 +34,5 @@ namespace SaleAnnouncements.DAL.Entities
 		/// Разрешаем пользователю указывать разные номера телефонов в разных объявлениях
 		/// </summary>
 		public string PhoneNumber { get; set; }
-
-		#region navigation
-
-		public Customer Customer { get; set; }
-
-		public Category Category { get; set; }
-
-		#endregion
 	}
 }
