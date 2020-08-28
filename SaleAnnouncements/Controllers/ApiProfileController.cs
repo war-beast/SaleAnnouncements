@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace SaleAnnouncements.Controllers
 {
@@ -86,6 +87,35 @@ namespace SaleAnnouncements.Controllers
 					result = await _photoService.Save(offerPhotos, result.EntityId);
 				}
 			}
+
+			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
+			{
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
+			}));
+		}
+
+		[HttpPost]
+		[Route("addStatus")]
+		public async Task<IActionResult> AddStatus([FromBody] NewStatusBindingModel model)
+		{
+			Result result;
+
+			if (!ModelState.IsValid || !model.SelectedStatusIds.Any())
+			{
+				result = new Result
+				{
+					IsSuccess = false,
+					EntityId = Guid.Empty,
+					Error = "Ошибка в заполненной форме"
+				};
+
+				return BadRequest(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
+				{
+					ContractResolver = new CamelCasePropertyNamesContractResolver()
+				}));
+			}
+
+			result = await _offerService.AddStatuses(model.Id, model.SelectedStatusIds);
 
 			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
 			{

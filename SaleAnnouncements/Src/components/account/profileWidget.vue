@@ -1,7 +1,7 @@
 ﻿<template>
 	<ul class="navbar-nav">
 		<li class="nav-item" v-if="isLogged">
-			<a class="nav-link text-dark" href="/Profile/" title="Manage">Привет {{userEmail}}</a>
+			<a class="nav-link text-dark" href="/Profile/" title="Manage">Привет <span style="text-decoration: underline;">{{userEmail}}</span></a>
 		</li>
 		<li class="nav-item" v-else>
 			<a class="nav-link text-dark" href="/Identity/Account/Register">Регистрация</a>

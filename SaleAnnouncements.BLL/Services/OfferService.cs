@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace SaleAnnouncements.BLL.Services
 {
@@ -63,7 +64,7 @@ namespace SaleAnnouncements.BLL.Services
 				.Where(x => x.CustomerId == id)
 				.OrderByDescending(x => x.CreationDate));
 
-			
+
 			return await GetOffersWithCategory(_mapper.Map<List<OfferDto>>(offers))
 				.ToListAsync();
 		}
@@ -76,11 +77,6 @@ namespace SaleAnnouncements.BLL.Services
 			};
 
 			offer.CustomerId = await GetCurrentUserId(userEmail);
-			var selectedStatusAmounts = _unitOfWork.OfferStatuses
-				.GetAll()
-				.Where(x => offer.SelectedStatusIds.Contains(x.Id))
-				.Select(x => x.Amount)
-				.ToList();
 
 			try
 			{
@@ -90,11 +86,7 @@ namespace SaleAnnouncements.BLL.Services
 				if (offer.SelectedStatusIds.Any())
 					_offerStatusService.SetStatusForOffer(result.EntityId, offer.SelectedStatusIds);
 
-				//Корректируем величину, отвечающую за изменение позиции объявления в списках, в зависимости от установленных статусов
-				foreach (var amount in selectedStatusAmounts)
-				{
-					offer.Sort += (int)amount;
-				}
+				UpdateSortingParameter(offer);
 
 				await _unitOfWork.SaveAsync();
 			}
@@ -116,9 +108,14 @@ namespace SaleAnnouncements.BLL.Services
 
 		public async Task<OfferDto> Get(Guid id)
 		{
-			var offer = await _unitOfWork.Offers.Get(id);
+			var offer = _mapper.Map<OfferDto>(await _unitOfWork.Offers.Get(id));
 
-			return _mapper.Map<OfferDto>(offer);
+			if (offer.OffersStatuses.Any())
+			{
+				offer.OffersStatuses = await _offerStatusService.GetOfferStatusMaps(offer.Id!.Value);
+			}
+
+			return offer;
 		}
 
 		public async Task<Result> Update(OfferDto offer)
@@ -141,6 +138,39 @@ namespace SaleAnnouncements.BLL.Services
 					IsSuccess = false,
 					Error = exc.Message,
 					EntityId = Guid.Empty
+				};
+			}
+
+			return result;
+		}
+
+		public async Task<Result> AddStatuses(Guid offerId, IEnumerable<Guid> statusIds)
+		{
+			var result = new Result
+			{
+				IsSuccess = true,
+				EntityId = offerId
+			};
+
+			var statusIdsListing = statusIds.ToList();
+			var offer = await Get(offerId);
+			offer.SelectedStatusIds = statusIdsListing;
+
+			try
+			{
+				_offerStatusService.SetStatusForOffer(offerId, statusIdsListing);
+				UpdateSortingParameter(offer);
+				await _unitOfWork.SaveAsync();
+			}
+			catch (Exception exc)
+			{
+				var message = $"Не удалось добавить статусы в объявлениe Id: {offerId}.";
+
+				_logger.LogError(message);
+				result = new Result
+				{
+					IsSuccess = false,
+					Error = $"{message} {exc.Message}"
 				};
 			}
 
@@ -181,6 +211,23 @@ namespace SaleAnnouncements.BLL.Services
 				offer.Category = await _categoryService.Get(offer.CategoryId);
 				offer.OffersStatuses = await _offerStatusService.GetOfferStatusMaps(offer.Id!.Value);
 				yield return offer;
+			}
+		}
+
+		private void UpdateSortingParameter(OfferDto offer)
+		{
+			var selectedStatusAmounts = _unitOfWork.OfferStatuses
+				.GetAll()
+				.Where(x => offer.SelectedStatusIds.Contains(x.Id))
+				.Select(x => x.Amount)
+				.ToList();
+
+			//Корректируем величину, отвечающую за изменение позиции объявления в списках, в зависимости от установленных статусов
+			foreach (var amount in selectedStatusAmounts)
+			{
+				offer.Sort += (int)amount;
+				var coreOffer = _mapper.Map<Offer>(offer);
+				_unitOfWork.Offers.Update(_mapper.Map<Offer>(offer));
 			}
 		}
 

@@ -104,6 +104,7 @@ let NewOfferComponent = class NewOfferComponent extends Vue {
                         this.offer = new OfferModel("", "", 0, "");
                         this.photos = [];
                         this.paidStatus = [];
+                        bus.$emit("clearStatusSelections");
                     }
                     else {
                         this.creationError = resultData.error;

@@ -17,5 +17,7 @@ namespace SaleAnnouncements.BLL.Interfaces
 		Task<OfferDto> Get(Guid id);
 
 		Task<Result> Update(OfferDto offer);
+
+		Task<Result> AddStatuses(Guid offerId, IEnumerable<Guid> statusIds);
 	}
 }

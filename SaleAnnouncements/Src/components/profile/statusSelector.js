@@ -27,6 +27,12 @@ let StatusSelectorComponent = class StatusSelectorComponent extends Vue {
             this.getAvailableStatuses();
         }, 0);
     }
+    created() {
+        bus.$on("clearStatusSelections", this.statusSelected);
+    }
+    statusSelected() {
+        this.paidStatus = [];
+    }
     getAvailableStatuses() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.apiRequest.getData(statusesUrl)

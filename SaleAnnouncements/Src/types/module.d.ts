@@ -5,3 +5,4 @@
 
 declare var globalAccessToken: string;
 declare var globalProfileNamespace: string;
+declare var globalWindowObject: any;

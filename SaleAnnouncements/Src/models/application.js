@@ -44,4 +44,9 @@ export class Status {
         return this._price;
     }
 }
+export class OfferPageOptions {
+    constructor(offerId) {
+        this.offerId = offerId;
+    }
+}
 //# sourceMappingURL=application.js.map

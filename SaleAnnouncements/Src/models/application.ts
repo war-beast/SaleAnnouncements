@@ -61,3 +61,11 @@ export class Status {
 		return this._price;
 	}
 }
+
+export class OfferPageOptions {
+	public offerId: string;
+
+	constructor(offerId: string) {
+		this.offerId = offerId;
+	}
+}

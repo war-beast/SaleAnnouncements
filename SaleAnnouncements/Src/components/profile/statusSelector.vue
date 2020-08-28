@@ -10,8 +10,9 @@
 
 		<div v-show="paidStatus.length > 0">
 			<b>Имитация формы оплаты:</b>
-			<div class="w-100 pay-form"></div>
-			<span class="shadow p-3 mb-5 bg-white rounded">Итоговая сумма на оплату: <b>{{totalAmount()}} ₽</b></span>
+			<div class="w-100 pay-form d-flex align-items-end">
+				<span class="shadow p-3 mb-5 bg-white rounded">Итоговая сумма на оплату: <b>{{totalAmount()}} ₽</b></span>
+			</div>
 		</div>
 	</div>
 </template>

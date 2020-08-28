@@ -37,5 +37,10 @@
 
 @section Scripts
 {
-	<script src="~/bundle/clearPage.bundle.js"></script>
+	<script>
+		window.pageOptions = {
+			offerId: "@Model.Id"
+		};
+	</script>
+	<script src="~/bundle/addStatusPage.bundle.js"></script>
 }

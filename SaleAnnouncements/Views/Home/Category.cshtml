@@ -6,8 +6,12 @@
 
 <div class="text-center">
 	<h1 class="display-4">Объявления в категории: @Model.Title</h1>
-	@{
+	@if(Model.Offers.Any()){
 		await Html.RenderPartialAsync("_OffeersListing", Model.Offers);
+	}
+	else
+	{
+		@: В этой категории нет объявлений
 	}
 	<div id="vue-app-container"></div>
 </div>

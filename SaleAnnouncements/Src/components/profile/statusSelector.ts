@@ -21,6 +21,14 @@ export default class StatusSelectorComponent extends Vue {
 		}, 0);
 	}
 
+	public created() {
+		bus.$on("clearStatusSelections", this.statusSelected);
+	}
+
+	private statusSelected() {
+		this.paidStatus = [];
+	}
+
 	private async getAvailableStatuses() {
 		await this.apiRequest.getData(statusesUrl)
 			.then((result: ApiResult) => {
