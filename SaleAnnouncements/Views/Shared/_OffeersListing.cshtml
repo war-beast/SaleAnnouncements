@@ -31,11 +31,12 @@
 						Телефон:
 						@if (User.Identity.IsAuthenticated)
 						{
-							@offer.PhoneNumber
+							//Показ скрытого телефона тоже реализован на JQuery для простоты. Если время останется переделаю на VueJS
+							<a href="/api/common/getOfferPhoneNumber?id=@offer.Id" class="phone-number text-decoration-none">показать</a>
 						}
 						else
 						{
-							<span title="Виден только зарегистрированным пользователям">********</span>
+							<span title="Может увидеть только зарегистрированный пользователь">********</span>
 						}
 					</p>
 				</blockquote>

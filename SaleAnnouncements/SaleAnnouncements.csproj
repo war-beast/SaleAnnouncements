@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Photo\**" />
+    <Content Remove="wwwroot\Photo\**" />
+    <EmbeddedResource Remove="wwwroot\Photo\**" />
+    <None Remove="wwwroot\Photo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Src\components\profile\newOffer.ts" />
     <None Remove="Src\models\application.ts" />
     <None Remove="Src\pages\profile\newOffer.ts" />
@@ -33,7 +40,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\bundle\" />
-    <Folder Include="wwwroot\Photo\" />
   </ItemGroup>
 
   <ItemGroup>

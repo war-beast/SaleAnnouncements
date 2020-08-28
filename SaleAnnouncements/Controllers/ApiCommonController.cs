@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,16 +16,19 @@ namespace SaleAnnouncements.Controllers
 
 		private readonly ICategoryService _categoryService;
 		private readonly IOfferStatusService _offerStatusService;
+		private readonly IOfferService _offerService;
 
 		#endregion
 
 		#region constructor
 
 		public ApiCommonController(ICategoryService categoryService, 
-			IOfferStatusService offerStatusService)
+			IOfferStatusService offerStatusService, 
+			IOfferService offerService)
 		{
 			_categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
-			_offerStatusService = offerStatusService ?? throw new ArgumentNullException(nameof(categoryService)); ;
+			_offerStatusService = offerStatusService ?? throw new ArgumentNullException(nameof(offerStatusService));
+			_offerService = offerService ?? throw new ArgumentNullException(nameof(offerService));
 		}
 
 		#endregion
@@ -51,6 +55,16 @@ namespace SaleAnnouncements.Controllers
 			{
 				ContractResolver = new CamelCasePropertyNamesContractResolver()
 			}));
+		}
+
+		[HttpGet]
+		[Route("getOfferPhoneNumber")]
+		[Authorize]
+		public async Task<ContentResult> GetOfferPhoneNumber(Guid id)
+		{
+			var offer = await _offerService.Get(id);
+
+			return Content(offer.PhoneNumber);
 		}
 	}
 }
