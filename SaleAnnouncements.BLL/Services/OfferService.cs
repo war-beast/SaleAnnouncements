@@ -57,11 +57,11 @@ namespace SaleAnnouncements.BLL.Services
 			return _mapper.Map<List<OfferDto>>(offers.ToList());
 		}
 
-		public async Task<IReadOnlyCollection<OfferDto>> GetForUser(Guid id)
+		public async Task<IReadOnlyCollection<OfferDto>> GetForUser(Guid customerId)
 		{
 			var offers = await Task.Run(() => _unitOfWork.Offers
 				.GetAll()
-				.Where(x => x.CustomerId == id)
+				.Where(x => x.CustomerId == customerId)
 				.OrderByDescending(x => x.CreationDate));
 
 
@@ -106,17 +106,8 @@ namespace SaleAnnouncements.BLL.Services
 			return result;
 		}
 
-		public async Task<OfferDto> Get(Guid id)
-		{
-			var offer = _mapper.Map<OfferDto>(await _unitOfWork.Offers.Get(id));
-
-			if (offer.OffersStatuses.Any())
-			{
-				offer.OffersStatuses = await _offerStatusService.GetOfferStatusMaps(offer.Id!.Value);
-			}
-
-			return offer;
-		}
+		public async Task<OfferDto> Get(Guid id) => 
+			_mapper.Map<OfferDto>(await _unitOfWork.Offers.Get(id));
 
 		public async Task<Result> Update(OfferDto offer)
 		{
@@ -175,6 +166,16 @@ namespace SaleAnnouncements.BLL.Services
 			}
 
 			return result;
+		}
+
+		public async Task<IReadOnlyCollection<OfferStatusDto>> GetOfferStatuses(Guid offerId)
+		{
+			var statuses = _unitOfWork.OffersStatusesMaps
+				.GetAll()
+				.Where(x => x.OfferId == offerId)
+				.Select(x => x.Status);
+
+			return await Task.Run(() => _mapper.Map<List<OfferStatusDto>>(statuses));
 		}
 
 		#region private methods

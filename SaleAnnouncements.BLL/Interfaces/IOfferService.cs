@@ -10,7 +10,7 @@ namespace SaleAnnouncements.BLL.Interfaces
 	{
 		Task<IReadOnlyCollection<OfferDto>> GetByCategory(Guid categoryId);
 
-		Task<IReadOnlyCollection<OfferDto>> GetForUser(Guid id);
+		Task<IReadOnlyCollection<OfferDto>> GetForUser(Guid customerId);
 
 		Task<Result> Create(OfferDto offer, string userEmail);
 
@@ -19,5 +19,7 @@ namespace SaleAnnouncements.BLL.Interfaces
 		Task<Result> Update(OfferDto offer);
 
 		Task<Result> AddStatuses(Guid offerId, IEnumerable<Guid> statusIds);
+
+		Task<IReadOnlyCollection<OfferStatusDto>> GetOfferStatuses(Guid offerId);
 	}
 }

@@ -17,21 +17,6 @@
 		@Model.Description
 	</div>
 
-	<div class="flex-row">
-		<strong>Статусы: </strong>
-		@if (Model.OffersStatuses.Any())
-		{
-			@foreach (var status in Model.OffersStatuses)
-			{
-				<span class="badge badge-success">@status.Status.Name</span>
-			}
-		}
-		else
-		{
-			@: нет
-		}
-	</div>
-
 	<div id="vue-app-container"></div>
 </div>
 

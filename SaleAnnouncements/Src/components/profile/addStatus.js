@@ -18,6 +18,7 @@ import ApiRequest from "Util/request";
 import StatusSelectorComponent from "Components/profile/statusSelector.vue";
 import { bus } from "Util/bus";
 const addStatusesUrl = "/api/profile/addStatus";
+const getStatusesUrl = "/api/common/getOfferStatuses";
 let AddStatusComponent = class AddStatusComponent extends Vue {
     constructor() {
         super();
@@ -26,8 +27,10 @@ let AddStatusComponent = class AddStatusComponent extends Vue {
         this.addingError = "";
         this.addingInProcess = false;
         this.formValid = true;
+        this.offerExistingStatuses = [];
         this.paidStatus = [];
         this.apiRequest = new ApiRequest();
+        setTimeout(() => this.reloadStatuses(), 0);
     }
     created() {
         bus.$on("statusSelected", this.statusSelected);
@@ -63,11 +66,25 @@ let AddStatusComponent = class AddStatusComponent extends Vue {
                     this.paidStatus = [];
                     this.successMessage = "Статусы добавлены к объявлению";
                     bus.$emit("clearStatusSelections");
+                    this.reloadStatuses();
                 }
                 else {
                     this.addingError = "Произошла ошибка на сервере, новые статусы не добавлены";
                 }
                 this.addingInProcess = false;
+            });
+        });
+    }
+    reloadStatuses() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.apiRequest.getData(`${getStatusesUrl}?id=${this.offerPageOptions.offerId}`)
+                .then((result) => {
+                if (result.success) {
+                    this.offerExistingStatuses = JSON.parse(result.value);
+                }
+                else {
+                    console.error("Произошла ошибка на сервере, не удалось получить статусы для объявления");
+                }
             });
         });
     }

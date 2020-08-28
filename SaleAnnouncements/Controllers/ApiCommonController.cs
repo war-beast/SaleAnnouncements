@@ -66,5 +66,17 @@ namespace SaleAnnouncements.Controllers
 
 			return Content(offer.PhoneNumber);
 		}
+
+		[HttpGet]
+		[Route("getOfferStatuses")]
+		public async Task<IActionResult> GetOfferStatuses(Guid id)
+		{
+			var model = await _offerService.GetOfferStatuses(id);
+
+			return Ok(JsonConvert.SerializeObject(model, Formatting.None, new JsonSerializerSettings
+			{
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
+			}));
+		}
 	}
 }

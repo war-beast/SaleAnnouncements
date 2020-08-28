@@ -1,5 +1,5 @@
 ﻿<template>
-	<div class="row d-flex flex-column">
+	<div class="d-flex flex-column">
 		<h4 class="h4">Хотите купить платные статусы? <span class="text-muted">(поднимают объявление в общем списке)</span></h4>
 		<div class="form-check my-2" v-for="status in statuses">
 			<input class="form-check-input" type="checkbox" :name="paidStatus" v-model="paidStatus" :value="status.id" :id="status.id" v-on:change="selectionChanged">
