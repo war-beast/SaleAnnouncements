@@ -29,6 +29,7 @@ namespace SaleAnnouncements
 			#region presentation level
 
 			services.AddTransient<IHomePageService, HomePageService>();
+			services.AddTransient<ICategoryPageService, CategoryPageService>();
 
 			#endregion
 		}

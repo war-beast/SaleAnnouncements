@@ -42,10 +42,6 @@
 						Обновлено: <cite title="Source Title">@offer.UpdateDate.ToShortDateString()</cite>
 					</footer>
 				</blockquote>
-				<div class="d-flex flex-column justify-content-center">
-					<button class="btn btn-outline-primary" type="button" role="button">Обновить</button>
-					<button class="btn btn-outline-danger mt-2" type="button" role="button">Удалить</button>
-				</div>
 			</div>
 			<div class="card-footer">
 				Статусы:
@@ -60,6 +56,9 @@
 				{
 					@: нет
 				}
+				<span class="ml-auto">
+					<a class="btn btn-light btn-sm" asp-controller="Profile" asp-action="AddStatus">Добавить</a>
+				</span>
 			</div>
 		</div>
 	}

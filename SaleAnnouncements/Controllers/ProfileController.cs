@@ -49,7 +49,12 @@ namespace SaleAnnouncements.Controllers
 			return View();
 		}
 
-		public IActionResult SendMessage()
+		public IActionResult Messages()
+		{
+			return View();
+		}
+
+		public IActionResult AddStatus()
 		{
 			return View();
 		}

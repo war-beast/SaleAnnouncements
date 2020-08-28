@@ -45,11 +45,13 @@ namespace SaleAnnouncements.BLL.Services
 
 		public async Task<IReadOnlyCollection<OfferDto>> GetByCategory(Guid categoryId)
 		{
+			//Список объявлений всегда будет отсортирован сперва по убыванию ценности (зависит от установленных статусов),
+			//затем по убыванию даты обновления
 			var offers = await Task.Run(() => _unitOfWork.Offers
 				.GetAll()
 				.Where(x => x.CategoryId == categoryId)
 				.OrderByDescending(x => x.Sort)
-				.ThenByDescending(x => x.CreationDate));
+				.ThenByDescending(x => x.UpdateDate));
 
 			return _mapper.Map<List<OfferDto>>(offers.ToList());
 		}

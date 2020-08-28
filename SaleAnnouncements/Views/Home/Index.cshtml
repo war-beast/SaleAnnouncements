@@ -7,11 +7,12 @@
 <div class="text-center">
     <h1 class="display-4">Добро пожаловать</h1>
 	<div class="container-fluid">
+		<h4>Выберите категорию объявлений</h4>
 		<div class="d-flex justify-content-center align-items-center my-3">
 			@foreach (var category in Model.Categories)
 			{
 				<div class="px-3">
-					<a href="#">@category.Name</a>
+					<a asp-controller="Home" asp-action="Category" asp-route-id="@category.Id" class="btn btn-primary">@category.Caption <span class="badge badge-light">@category.DependenciesCount</span></a>
 				</div>
 			}
 		</div>

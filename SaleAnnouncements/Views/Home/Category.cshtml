@@ -1,0 +1,18 @@
+﻿@model CategoryViewModel
+
+@{
+	ViewData["Title"] = Model.Title;
+}
+
+<div class="text-center">
+	<h1 class="display-4">Объявления в категории: @Model.Title</h1>
+	@{
+		await Html.RenderPartialAsync("_OffeersListing", Model.Offers);
+	}
+	<div id="vue-app-container"></div>
+</div>
+
+@section Scripts
+{
+	<script src="~/bundle/clearPage.bundle.js"></script>
+}

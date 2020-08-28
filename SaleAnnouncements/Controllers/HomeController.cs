@@ -12,22 +12,23 @@ namespace SaleAnnouncements.Controllers
 	{
 		#region private members
 
-		private readonly ILogger<HomeController> _logger;
 		private readonly IHomePageService _homePageService;
+		private readonly ICategoryPageService _categoryPageService;
 
 		#endregion
 
 		#region constructor
 
-		public HomeController(ILogger<HomeController> logger, IHomePageService homePageService)
+		public HomeController(IHomePageService homePageService, 
+			ICategoryPageService categoryPageService)
 		{
-			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			_homePageService = homePageService ?? throw new ArgumentNullException(nameof(homePageService));
+			_categoryPageService = categoryPageService;
 		}
 
 		#endregion
 
-
+		[ResponseCache(Duration = 300)]
 		public async Task<IActionResult> Index()
 		{
 			var model = await _homePageService.GetPageModel();
@@ -37,6 +38,13 @@ namespace SaleAnnouncements.Controllers
 		public IActionResult Privacy()
 		{
 			return View();
+		}
+
+		[ResponseCache(Duration = 300)]
+		public async Task<IActionResult> Category(Guid id)
+		{
+			var model = await _categoryPageService.GetPage(id);
+			return View(model);
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,0 +1,45 @@
+﻿@using System.Globalization
+@model IReadOnlyCollection<OfferDto>
+@inject UserManager<IdentityUser> UserManager
+
+<div class="container-fluid text-left">
+	@foreach (var offer in Model)
+	{
+		<div class="row pb-4 mt-4 border-bottom">
+			<div class="d-flex justify-content-between px-2">
+				<div class="image-slider align-items-center">
+					@{
+						var images = offer.Photos.Where(x => x.Image != null);
+					}
+					@foreach (var image in images)
+					{
+						if (image.Image != null)
+						{
+							//Здесь реализован просмотр полноразмерной версии фото. Реализовано через JQuery только из-за простоты и меньшего объёма кода.
+							//На реальном проекте я бы сделал это на VueJS
+							<a asp-controller="Common" asp-action="GetPhoto" asp-route-id="@image.Id" class="dialog mx-1 my-1">
+								<img src="data:image/jpeg;base64,@(Convert.ToBase64String(image.Image))" />
+							</a>
+						}
+					}
+				</div>
+				<blockquote class="blockquote mb-0 mx-2">
+					<h4>@offer.Title</h4>
+					<p>@offer.Description</p>
+					<p>Цена: @offer.Price.ToString(CultureInfo.CurrentCulture)</p>
+					<p>
+						Телефон:
+						@if (User.Identity.IsAuthenticated)
+						{
+							@offer.PhoneNumber
+						}
+						else
+						{
+							<span title="Виден только зарегистрированным пользователям">********</span>
+						}
+					</p>
+				</blockquote>
+			</div>
+		</div>
+	}
+</div>
