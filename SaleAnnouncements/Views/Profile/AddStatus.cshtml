@@ -5,5 +5,37 @@
 	ViewData["Title"] = "Личный кабинет - добавление статуса к объявлению";
 }
 
-<h2 class="h2">Добавление статуса к объявлению: <span class="text-muted">@Model.Title</span></h2>
+<h2 class="h2">Добавление статуса к объявлению.</h2>
 
+<div class="d-flex flex-column">
+	<div>
+		<h2 class="display-2">@Model.Title</h2>
+	</div>
+
+	<div>
+		<strong>Текст объявления: </strong>
+		@Model.Description
+	</div>
+
+	<div class="flex-row">
+		<strong>Статусы: </strong>
+		@if (Model.OffersStatuses.Any())
+		{
+			@foreach (var status in Model.OffersStatuses)
+			{
+				<span class="badge badge-success">@status.Status.Name</span>
+			}
+		}
+		else
+		{
+			@: нет
+		}
+	</div>
+
+	<div id="vue-app-container"></div>
+</div>
+
+@section Scripts
+{
+	<script src="~/bundle/clearPage.bundle.js"></script>
+}

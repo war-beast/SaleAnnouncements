@@ -1,13 +1,19 @@
-﻿import { Vue, Component } from "vue-property-decorator";
+﻿import Vue from "vue";
+import Component from "vue-class-component";
 import ApiRequest from "Util/request";
 import { ApiResult, ServerOperationResult } from "Models/apiResult";
-import { OfferModel, Category, Status } from "Models/application";
+import { OfferModel, Category } from "Models/application";
+import StatusSelectorComponent from "Components/profile/statusSelector.vue";
+import { bus } from "Util/bus";
 
 const createOfferUrl = "/api/profile/addOffer";
 const categoriesUrl = "/api/common/getCategories";
-const statusesUrl = "/api/common/getStatuses";
 
-@Component
+@Component({
+	components: {
+		statusSelectorComponent: StatusSelectorComponent
+	}
+})
 export default class NewOfferComponent extends Vue {
 	$refs!: {
 		files: HTMLInputElement
@@ -21,7 +27,6 @@ export default class NewOfferComponent extends Vue {
 	private creationInProcess: boolean = false;
 	private successMessage: string = "";
 	private categories: Array<Category> = [];
-	private statuses: Array<Status> = [];
 
 	private selectedCategoryId: string | null = null;
 	private paidStatus: Array<string> = [];
@@ -34,8 +39,15 @@ export default class NewOfferComponent extends Vue {
 
 		setTimeout(() => {
 			this.getAvailableCategories();
-			this.getAvailableStatuses();
 		}, 0);
+	}
+
+	public created() {
+		bus.$on("statusSelected", this.statusSelected);
+	}
+
+	private statusSelected(value: Array<string>) {
+		this.paidStatus = value;
 	}
 
 	private addFiles() {
@@ -129,28 +141,5 @@ export default class NewOfferComponent extends Vue {
 					console.log(`Ошибка загрузки данных по url: ${categoriesUrl}`);
 				}
 			});
-	}
-
-	private async getAvailableStatuses() {
-		await this.apiRequest.getData(statusesUrl)
-			.then((result: ApiResult) => {
-				if (result.success) {
-					this.statuses = JSON.parse(result.value);
-				} else {
-					console.log(`Ошибка загрузки данных по url: ${statusesUrl}`);
-				}
-			});
-	}
-
-	private totalAmount(): number {
-		var selectedStatuses = this.getSelectedStatuses();
-
-		return selectedStatuses.reduce((sum, item) => sum + item.price, 0);
-	}
-
-	private getSelectedStatuses(): Array<Status> {
-		return this.statuses.filter((item) => {
-			return this.paidStatus.indexOf(item.id) !== -1;
-		});
 	}
 }

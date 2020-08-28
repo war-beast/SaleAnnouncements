@@ -65,7 +65,6 @@ namespace SaleAnnouncements.Controllers
 			if (result.IsSuccess)
 			{
 				var offerPhotos = new List<PhotoDto>();
-				//TODO: Сохранить фотографии
 				foreach (var photo in model.Photos)
 				{
 					if (photo != null)

@@ -13,12 +13,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Vue, Component } from "vue-property-decorator";
+import Vue from "vue";
+import Component from "vue-class-component";
 import ApiRequest from "Util/request";
 import { OfferModel } from "Models/application";
+import StatusSelectorComponent from "Components/profile/statusSelector.vue";
+import { bus } from "Util/bus";
 const createOfferUrl = "/api/profile/addOffer";
 const categoriesUrl = "/api/common/getCategories";
-const statusesUrl = "/api/common/getStatuses";
 let NewOfferComponent = class NewOfferComponent extends Vue {
     constructor() {
         super();
@@ -28,15 +30,19 @@ let NewOfferComponent = class NewOfferComponent extends Vue {
         this.creationInProcess = false;
         this.successMessage = "";
         this.categories = [];
-        this.statuses = [];
         this.selectedCategoryId = null;
         this.paidStatus = [];
         this.offer = new OfferModel("", "", 0, "");
         this.apiRequest = new ApiRequest();
         setTimeout(() => {
             this.getAvailableCategories();
-            this.getAvailableStatuses();
         }, 0);
+    }
+    created() {
+        bus.$on("statusSelected", this.statusSelected);
+    }
+    statusSelected(value) {
+        this.paidStatus = value;
     }
     addFiles() {
         this.$refs.files.click();
@@ -123,31 +129,13 @@ let NewOfferComponent = class NewOfferComponent extends Vue {
             });
         });
     }
-    getAvailableStatuses() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.apiRequest.getData(statusesUrl)
-                .then((result) => {
-                if (result.success) {
-                    this.statuses = JSON.parse(result.value);
-                }
-                else {
-                    console.log(`Ошибка загрузки данных по url: ${statusesUrl}`);
-                }
-            });
-        });
-    }
-    totalAmount() {
-        var selectedStatuses = this.getSelectedStatuses();
-        return selectedStatuses.reduce((sum, item) => sum + item.price, 0);
-    }
-    getSelectedStatuses() {
-        return this.statuses.filter((item) => {
-            return this.paidStatus.indexOf(item.id) !== -1;
-        });
-    }
 };
 NewOfferComponent = __decorate([
-    Component
+    Component({
+        components: {
+            statusSelectorComponent: StatusSelectorComponent
+        }
+    })
 ], NewOfferComponent);
 export default NewOfferComponent;
 //# sourceMappingURL=newOffer.js.map

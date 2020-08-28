@@ -14,8 +14,10 @@
 
   <ItemGroup>
     <None Remove="Src\components\profile\newOffer.ts" />
+    <None Remove="Src\components\profile\statusSelector.ts" />
     <None Remove="Src\models\application.ts" />
     <None Remove="Src\pages\profile\newOffer.ts" />
+    <None Remove="Src\util\bus.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,8 +46,10 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Src\components\profile\newOffer.ts" />
+    <TypeScriptCompile Include="Src\components\profile\statusSelector.ts" />
     <TypeScriptCompile Include="Src\models\application.ts" />
     <TypeScriptCompile Include="Src\pages\profile\newOffer.ts" />
+    <TypeScriptCompile Include="Src\util\bus.ts" />
   </ItemGroup>
 
 </Project>

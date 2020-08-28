@@ -57,16 +57,14 @@
 					@: нет
 				}
 				<span class="ml-auto">
-					<a class="btn btn-light btn-sm" asp-controller="Profile" asp-action="AddStatus">Добавить</a>
+					<a class="btn btn-light btn-sm" asp-controller="Profile" asp-action="AddStatus" asp-route-id="@offer.Id">Добавить</a>
 				</span>
 			</div>
 		</div>
 	}
 </div>
 
-<div id="vue-app-container">
-
-</div>
+<div id="vue-app-container"></div>
 
 @section Scripts
 {

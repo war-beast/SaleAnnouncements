@@ -54,9 +54,10 @@ namespace SaleAnnouncements.Controllers
 			return View();
 		}
 
-		public IActionResult AddStatus()
+		public async Task<IActionResult> AddStatus(Guid id)
 		{
-			return View();
+			var model = await _offerService.Get(id);
+			return View(model);
 		}
 	}
 }
