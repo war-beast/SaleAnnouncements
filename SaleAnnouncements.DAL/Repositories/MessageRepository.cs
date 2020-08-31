@@ -39,6 +39,7 @@ namespace SaleAnnouncements.DAL.Repositories
 			#endregion
 
 			item.Id = Guid.NewGuid();
+			item.CreationDate = DateTime.Now;
 			_db.Messages.Add(item);
 
 			return item.Id;
