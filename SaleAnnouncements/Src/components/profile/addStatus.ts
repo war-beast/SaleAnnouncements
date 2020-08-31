@@ -1,6 +1,6 @@
 ﻿import { Vue, Component, Prop } from "vue-property-decorator";
 import ApiRequest from "Util/request";
-import { ApiResult, ServerOperationResult } from "Models/apiResult";
+import { ApiResult } from "Models/apiResult";
 import StatusSelectorComponent from "Components/profile/statusSelector.vue";
 import { bus } from "Util/bus";
 import { Status, OfferPageOptions } from "Models/application";
