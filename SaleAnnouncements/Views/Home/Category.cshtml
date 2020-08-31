@@ -7,7 +7,7 @@
 <div class="text-center">
 	<h1 class="display-4">Объявления в категории: @Model.Title</h1>
 	@if(Model.Offers.Any()){
-		await Html.RenderPartialAsync("_OffeersListing", Model.Offers);
+		await Html.RenderPartialAsync("_OffeersListing", (Model.Offers, Model.CurrentCustomerId));
 	}
 	else
 	{

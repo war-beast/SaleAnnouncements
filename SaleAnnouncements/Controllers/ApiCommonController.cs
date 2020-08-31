@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SaleAnnouncements.BLL.Interfaces;
+using SaleAnnouncements.BLL.Model;
+using SaleAnnouncements.Models;
 
 namespace SaleAnnouncements.Controllers
 {
@@ -74,6 +76,37 @@ namespace SaleAnnouncements.Controllers
 			var model = await _offerService.GetOfferStatuses(id);
 
 			return Ok(JsonConvert.SerializeObject(model, Formatting.None, new JsonSerializerSettings
+			{
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
+			}));
+		}
+
+		[HttpPost]
+		[Route("saveMessage")]
+		public async Task<IActionResult> SaveMessage([FromBody] MessageBindingModel model)
+		{
+			Result result = new Result
+			{
+				IsSuccess = true,
+				EntityId = model.OfferId
+			};
+
+			if (!ModelState.IsValid)
+			{
+				result = new Result
+				{
+					IsSuccess = false,
+					EntityId = Guid.Empty,
+					Error = "Ошибка в заполненной форме"
+				};
+
+				return BadRequest(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
+				{
+					ContractResolver = new CamelCasePropertyNamesContractResolver()
+				}));
+			}
+
+			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
 			{
 				ContractResolver = new CamelCasePropertyNamesContractResolver()
 			}));

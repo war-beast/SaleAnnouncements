@@ -6,6 +6,6 @@ namespace SaleAnnouncements.BLL.Interfaces
 {
 	public interface ICategoryPageService
 	{
-		Task<CategoryViewModel> GetPage(Guid id);
+		Task<CategoryViewModel> GetPage(Guid id, string? currentCustomerName = null);
 	}
 }

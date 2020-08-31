@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
+using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.Models;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using SaleAnnouncements.BLL.Interfaces;
+using SaleAnnouncements.BLL.Model.Filters;
 
 namespace SaleAnnouncements.Controllers
 {
@@ -23,7 +23,7 @@ namespace SaleAnnouncements.Controllers
 			ICategoryPageService categoryPageService)
 		{
 			_homePageService = homePageService ?? throw new ArgumentNullException(nameof(homePageService));
-			_categoryPageService = categoryPageService;
+			_categoryPageService = categoryPageService ?? throw new ArgumentNullException(nameof(categoryPageService));
 		}
 
 		#endregion
