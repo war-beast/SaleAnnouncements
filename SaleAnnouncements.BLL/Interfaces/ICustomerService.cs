@@ -12,5 +12,7 @@ namespace SaleAnnouncements.BLL.Interfaces
 		Task<IReadOnlyCollection<CustomerDto>> GetFiltered(ICustomerFilter filter);
 
 		Task<Guid> Create(string userId);
+
+		Task<Guid> GetCustomerId(string name);
 	}
 }

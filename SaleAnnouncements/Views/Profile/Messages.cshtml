@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Guid
+
+@{
 	Layout = "_ProfileLayout";
 	ViewData["Title"] = "Личный кабинет - мои сообщения";
 }
@@ -11,5 +13,10 @@
 
 @section Scripts
 {
+	<script>
+		window.pageOptions = {
+			currentCustomerId: "@Model"
+		}
+	</script>
 	<script src="~/bundle/messagesPage.bundle.js"></script>
 }

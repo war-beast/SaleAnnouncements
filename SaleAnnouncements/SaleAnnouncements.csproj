@@ -17,6 +17,7 @@
     <None Remove="Src\components\profile\messages.ts" />
     <None Remove="Src\components\profile\newOffer.ts" />
     <None Remove="Src\components\profile\statusSelector.ts" />
+    <None Remove="Src\interfaces\messages\types.ts" />
     <None Remove="Src\models\application.ts" />
     <None Remove="Src\pages\profile\addStatus.ts" />
     <None Remove="Src\pages\profile\messages.ts" />
@@ -53,6 +54,7 @@
     <TypeScriptCompile Include="Src\components\profile\messages.ts" />
     <TypeScriptCompile Include="Src\components\profile\newOffer.ts" />
     <TypeScriptCompile Include="Src\components\profile\statusSelector.ts" />
+    <TypeScriptCompile Include="Src\interfaces\messages\types.ts" />
     <TypeScriptCompile Include="Src\models\application.ts" />
     <TypeScriptCompile Include="Src\pages\profile\addStatus.ts" />
     <TypeScriptCompile Include="Src\pages\profile\messages.ts" />

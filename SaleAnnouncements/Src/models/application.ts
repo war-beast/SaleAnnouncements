@@ -1,4 +1,6 @@
-﻿export class OfferModel {
+﻿import { IMessageTitle, ListingItem } from "Interfaces/messages/types";
+
+export class OfferModel {
 	private photos: Array<File> = [];
 
 	public title: string = "";
@@ -20,41 +22,16 @@
 	}
 }
 
-export class Category {
-	private _name: string;
-	private _id: string;
-
-	constructor(id: string, name: string) {
-		this._id = id;
-		this._name = name;
-	}
-
-	get name(): string {
-		return this._name;
-	}
-
-	get id(): string {
-		return this._id;
-	}
+export class Category extends ListingItem {
 }
 
-export class Status {
-	private _id: string;
-	private _name: string;
+export class Status extends ListingItem {
 	private _price: number;
 
 	constructor(id: string, name: string, price: number) {
-		this._id = id;
-		this._name = name;
+		super(id, name);
+
 		this._price = price;
-	}
-
-	get name(): string {
-		return this._name;
-	}
-
-	get id(): string {
-		return this._id;
 	}
 
 	get price(): number {
@@ -68,4 +45,38 @@ export class OfferPageOptions {
 	constructor(offerId: string) {
 		this.offerId = offerId;
 	}
+}
+
+export class MessageTitle implements IMessageTitle {
+	public name: string;
+	public date: string;
+
+	public messageId: string;
+
+	constructor(name: string, date: string, messageId: string) {
+		this.name = name;
+		this.date = date;
+		this.messageId = messageId;
+	}
+}
+
+export class SingleMessage implements IMessageTitle {
+	public name: string;
+	public date: string;
+	public message: string;
+	public isMyMessage: boolean;
+
+	constructor(name: string, date: string, message: string, isMyMessage: boolean) {
+		this.name = name;
+		this.date = date;
+		this.message = message;
+		this.isMyMessage = isMyMessage;
+	}
+}
+
+export class MessageHostOffer extends ListingItem {
+}
+
+export class MessagesPageOptions {
+	public currentCustomerId: string;
 }

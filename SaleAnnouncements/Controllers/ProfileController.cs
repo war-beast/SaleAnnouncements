@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.BLL.Model.Filters;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SaleAnnouncements.Controllers
 {
@@ -35,12 +35,9 @@ namespace SaleAnnouncements.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var customersFilter = new CustomerFilterBuilder()
-				.SetEmail(User.Identity.Name!)
-				.Build();
-			var customers = await _customerService.GetFiltered(customersFilter);
+			var customerId = await _customerService.GetCustomerId(User.Identity.Name!);
 
-			var model = await _offerService.GetForUser(customers.First().Id!.Value);
+			var model = await _offerService.GetForUser(customerId);
 			return View(model);
 		}
 
@@ -49,9 +46,10 @@ namespace SaleAnnouncements.Controllers
 			return View();
 		}
 
-		public IActionResult Messages()
+		public async Task<IActionResult> Messages()
 		{
-			return View();
+			var currentCustomerId = await _customerService.GetCustomerId(User.Identity.Name!);
+			return View(currentCustomerId);
 		}
 
 		public async Task<IActionResult> AddStatus(Guid id)

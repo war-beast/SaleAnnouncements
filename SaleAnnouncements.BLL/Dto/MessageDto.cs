@@ -19,5 +19,7 @@ namespace SaleAnnouncements.BLL.Dto
 		/// ID первого сообщения в диалоге
 		/// </summary>
 		public Guid? ParentId { get; set; }
+
+		public DateTime CreationDate { get; set; }
 	}
 }

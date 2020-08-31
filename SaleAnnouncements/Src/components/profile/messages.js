@@ -15,14 +15,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Vue, Component } from "vue-property-decorator";
 import ApiRequest from "Util/request";
+import { MessageHostOffer } from "Models/application";
+const getMessageTitles = "/api/profile/getCustomerMessages";
+const getMessageThread = "/api/profile/getMessageThread";
 let MessagesComponent = class MessagesComponent extends Vue {
     constructor() {
         super();
+        this.pageOptions = globalWindowObject.pageOptions;
+        this.selectedTopicMessages = [];
+        this.messageHostOffer = new MessageHostOffer("", "");
+        this.messageTitles = [];
         this.apiRequest = new ApiRequest();
         setTimeout(() => this.reloadMessages(), 0);
     }
     reloadMessages() {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.apiRequest.getData(`${getMessageTitles}?id=${this.pageOptions.currentCustomerId}`)
+                .then((result) => {
+                if (result.success) {
+                    this.messageTitles = JSON.parse(result.value);
+                }
+                else {
+                    console.error("Произошла ошибка на сервере, не удалось получить список сообщений");
+                }
+            });
+        });
+    }
+    load(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.apiRequest.getData(`${getMessageThread}?id=${this.pageOptions.currentCustomerId}`)
+                .then((result) => {
+                if (result.success) {
+                    this.selectedTopicMessages = JSON.parse(result.value);
+                }
+                else {
+                    console.error("Произошла ошибка на сервере, не удалось ветку сообщений");
+                }
+            });
         });
     }
 };

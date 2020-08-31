@@ -25,6 +25,8 @@ namespace SaleAnnouncements.Controllers
 		private readonly IMapper _mapper;
 		private readonly IOfferService _offerService;
 		private readonly IPhotoService _photoService;
+		private readonly ICustomerService _customerService;
+		private readonly IMessageService _messageService;
 
 		#endregion
 
@@ -32,11 +34,15 @@ namespace SaleAnnouncements.Controllers
 
 		public ApiProfileController(IOfferService offerService, 
 			IMapper mapper, 
-			IPhotoService photoService)
+			IPhotoService photoService, 
+			ICustomerService customerService, 
+			IMessageService messageService)
 		{
 			_offerService = offerService ?? throw new ArgumentNullException(nameof(offerService));
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 			_photoService = photoService ?? throw new ArgumentNullException(nameof(photoService));
+			_customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+			_messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
 		}
 
 		#endregion
@@ -116,6 +122,24 @@ namespace SaleAnnouncements.Controllers
 			}
 
 			result = await _offerService.AddStatuses(model.Id, model.SelectedStatusIds);
+
+			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
+			{
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
+			}));
+		}
+
+		[HttpGet]
+		[Route("getCustomerMessages")]
+		public async Task<IActionResult> GetCustomerMessages(Guid id)
+		{
+			var currentCustomerId = await _customerService.GetCustomerId(User.Identity.Name!);
+			if (id != currentCustomerId)
+			{
+				return BadRequest("Получен запрос от постороннего пользователя");
+			}
+
+			var result = await _messageService.GetUserMessageTitles(id);
 
 			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
 			{

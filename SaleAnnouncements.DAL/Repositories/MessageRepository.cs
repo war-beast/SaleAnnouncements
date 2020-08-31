@@ -26,7 +26,8 @@ namespace SaleAnnouncements.DAL.Repositories
 
 		public IQueryable<Message> GetAll()
 		{
-			return _db.Messages.AsNoTracking();
+			return _db.Messages
+				.AsNoTracking();
 		}
 
 		public Guid Create(Message item)

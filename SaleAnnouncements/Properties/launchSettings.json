@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "Profile/AddStatus/7f67a17c-1dbe-4013-811a-6ae54464de42",
+      "launchUrl": "Profile/Messages",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

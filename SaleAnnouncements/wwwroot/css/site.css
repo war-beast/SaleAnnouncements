@@ -121,6 +121,12 @@ body {
 	height: 224px;
 }
 
+.message-list {
+	width: 100%;
+	max-height: 600px;
+	overflow-y: scroll;
+}
+
 @media (max-width: 767px) {
 	.card-body {
 		flex-direction: column;

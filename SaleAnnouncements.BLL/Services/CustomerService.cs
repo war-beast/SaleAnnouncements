@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using SaleAnnouncements.BLL.Model.Filters;
 using SaleAnnouncements.DAL.Entities;
 using SaleAnnouncements.DAL.Interfaces;
 
@@ -36,8 +37,20 @@ namespace SaleAnnouncements.BLL.Services
 
 		#endregion
 
-		public async Task<CustomerDto> Get(Guid id) => 
-			_mapper.Map<CustomerDto>(await _unitOfWork.Customers.Get(id));
+		public async Task<CustomerDto> Get(Guid id)
+		{ 
+			var customer = _mapper.Map<CustomerDto>(await _unitOfWork.Customers.Get(id));
+			var user = await _userManager.FindByIdAsync(customer.UserId);
+			if (user == null)
+			{
+				throw new InvalidOperationException($"Не удалось получить пользователя Id: {customer.UserId}");
+			}
+
+			customer.UserName = user.UserName;
+			customer.UserEmail = user.Email;
+
+			return customer;
+		}
 
 		public async Task<IReadOnlyCollection<CustomerDto>> GetFiltered(ICustomerFilter filter)
 		{
@@ -82,6 +95,23 @@ namespace SaleAnnouncements.BLL.Services
 			}
 
 			return newCustomerId;
+		}
+
+		public async Task<Guid> GetCustomerId(string name)
+		{
+			#region validation
+
+			if(string.IsNullOrWhiteSpace(name))
+				throw new ArgumentNullException(nameof(name));
+
+			#endregion
+
+			var customersFilter = new CustomerFilterBuilder()
+				.SetEmail(name)
+				.Build();
+			var customers = await GetFiltered(customersFilter);
+
+			return customers.First().Id!.Value;
 		}
 	}
 }
