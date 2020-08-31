@@ -1,7 +1,7 @@
-﻿import { Vue, Component, Prop } from "vue-property-decorator";
+﻿import { Vue, Component } from "vue-property-decorator";
 import ApiRequest from "Util/request";
 import { ApiResult } from "Models/apiResult";
-import { MessageTitle as MessageAuthor, SingleMessage, MessageHostOffer, MessagesPageOptions } from "Models/application";
+import { MessageTitle, MessageThread, MessagesPageOptions } from "Models/application";
 
 const getMessageTitles = "/api/profile/getCustomerMessages";
 const getMessageThread = "/api/profile/getMessageThread";
@@ -11,9 +11,8 @@ export default class MessagesComponent extends Vue {
 	private pageOptions: MessagesPageOptions = globalWindowObject.pageOptions;
 
 	private readonly apiRequest: ApiRequest;
-	private selectedTopicMessages: Array<SingleMessage> = [];
-	private messageHostOffer: MessageHostOffer = new MessageHostOffer("", "");
-	private messageTitles: Array<MessageAuthor> = [];
+	private messageThread: MessageThread = new MessageThread("", "", []);
+	private messageTitles: Array<MessageTitle> = [];
 
 	constructor() {
 		super();
@@ -34,10 +33,10 @@ export default class MessagesComponent extends Vue {
 	}
 
 	private async load(id: string) {
-		await this.apiRequest.getData(`${getMessageThread}?id=${this.pageOptions.currentCustomerId}`)
+		await this.apiRequest.getData(`${getMessageThread}?customerId=${this.pageOptions.currentCustomerId}&parentMessageId=${id}`)
 			.then((result: ApiResult) => {
 				if (result.success) {
-					this.selectedTopicMessages = JSON.parse(result.value);
+					this.messageThread = JSON.parse(result.value);
 				} else {
 					console.error("Произошла ошибка на сервере, не удалось ветку сообщений");
 				}

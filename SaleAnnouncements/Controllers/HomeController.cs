@@ -43,7 +43,7 @@ namespace SaleAnnouncements.Controllers
 		[ResponseCache(Duration = 300)]
 		public async Task<IActionResult> Category(Guid id)
 		{
-			var model = await _categoryPageService.GetPage(id);
+			var model = await _categoryPageService.GetPage(id, User.Identity.Name);
 			return View(model);
 		}
 

@@ -74,7 +74,14 @@ export class SingleMessage implements IMessageTitle {
 	}
 }
 
-export class MessageHostOffer extends ListingItem {
+export class MessageThread extends ListingItem {
+	public messages: Array<SingleMessage> = [];
+
+	constructor(id: string, name: string, messages: Array<SingleMessage>) {
+		super(id, name);
+
+		this.messages = messages;
+	}
 }
 
 export class MessagesPageOptions {

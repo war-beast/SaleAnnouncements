@@ -5,8 +5,6 @@ namespace SaleAnnouncements.Models
 {
 	public class MessageBindingModel
 	{
-		public Guid? HostMessageId { get; set; }
-
 		[Required]
 		public Guid CurrentCustomerId { get; set; }
 

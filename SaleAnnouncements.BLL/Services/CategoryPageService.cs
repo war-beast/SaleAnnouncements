@@ -37,7 +37,7 @@ namespace SaleAnnouncements.BLL.Services
 			var category = await _categoryService.Get(id);
 			IReadOnlyCollection<CustomerDto> customers = new List<CustomerDto>();
 
-			if (string.IsNullOrWhiteSpace(currentCustomerName))
+			if (!string.IsNullOrWhiteSpace(currentCustomerName))
 			{
 				var customersFilter = new CustomerFilterBuilder()
 					.SetEmail(currentCustomerName!)

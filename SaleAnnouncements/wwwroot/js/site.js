@@ -24,7 +24,7 @@ $(document).ready(function () {
 
 	$(".message-btn").click(function (e) {
 		e.preventDefault();
-		$("#OfferOwnerId").val($(this).data("customerid"));
+		$("#OfferOwnerId").val($(this).data("ownerid"));
 		$("#OfferId").val($(this).data("offerid"));
 	});
 

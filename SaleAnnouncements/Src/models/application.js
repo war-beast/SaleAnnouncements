@@ -48,7 +48,12 @@ export class SingleMessage {
         this.isMyMessage = isMyMessage;
     }
 }
-export class MessageHostOffer extends ListingItem {
+export class MessageThread extends ListingItem {
+    constructor(id, name, messages) {
+        super(id, name);
+        this.messages = [];
+        this.messages = messages;
+    }
 }
 export class MessagesPageOptions {
 }

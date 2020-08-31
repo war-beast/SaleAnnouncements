@@ -23,9 +23,9 @@ namespace SaleAnnouncements.BLL.Services
 
 		#endregion
 
-		public MessageService(IUnitOfWork unitOfWork, 
-			IMapper mapper, 
-			ILogger<MessageService> logger, 
+		public MessageService(IUnitOfWork unitOfWork,
+			IMapper mapper,
+			ILogger<MessageService> logger,
 			ICustomerService customerService) : base(unitOfWork)
 		{
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -42,8 +42,9 @@ namespace SaleAnnouncements.BLL.Services
 
 			var existingHostMessage = _unitOfWork.Messages
 				.GetAll()
-				.FirstOrDefault(x => x.ParentId == null 
-					&& x.Subject.Equals(message.Subject));
+				.FirstOrDefault(x => x.ParentId == null
+					&& x.Subject.Equals(message.Subject)
+					&& x.CustomerId == message.CustomerId);
 
 			var coreMessage = _mapper.Map<Message>(message);
 			if (existingHostMessage != null)
@@ -95,8 +96,27 @@ namespace SaleAnnouncements.BLL.Services
 				.DistinctBy(x => x.Id)
 				.OrderByDescending(x => x.CreationDate);
 
-			return await GetMessageTitles(uniqueParentMessages)
+			return await GetMessageTitles(uniqueParentMessages, customerId)
 				.ToListAsync();
+		}
+
+		public async Task<MessageThread> GetMessageThread(Guid customerId, Guid parentMessageId)
+		{
+			var parentMessage = await _unitOfWork.Messages.Get(parentMessageId);
+			var otherMessages = _unitOfWork.Messages
+				.GetAll()
+				.Where(x => x.ParentId == parentMessageId)
+				.OrderByDescending(x => x.CreationDate)
+				.ToList();
+			otherMessages.Insert(0, parentMessage);
+
+			return new MessageThread
+			{
+				Id = parentMessageId,
+				Name = parentMessage.Subject,
+				Messages = await GetMessagesWithCustomers(otherMessages, customerId)
+					.ToListAsync()
+			};
 		}
 
 		#region ptivate methods
@@ -109,16 +129,38 @@ namespace SaleAnnouncements.BLL.Services
 			}
 		}
 
-		private async IAsyncEnumerable<MessageTitle> GetMessageTitles(IEnumerable<Message> messages)
+		private async IAsyncEnumerable<MessageTitle> GetMessageTitles(IEnumerable<Message> messages, Guid customerId)
 		{
 			foreach (var message in messages)
 			{
 				var customer = await _customerService.Get(message.CustomerId);
+				var companion = await _customerService.Get(message.CompanionId);
+
 				yield return new MessageTitle
 				{
 					Date = message.CreationDate.ToShortDateString(),
 					Id = message.Id,
-					Name = customer.UserName
+					Name = customerId == message.CustomerId 
+						? companion.UserName 
+						: customer.UserName
+				};
+			}
+		}
+
+		private async IAsyncEnumerable<SingleMessage> GetMessagesWithCustomers(IEnumerable<Message> messages, Guid customerId)
+		{
+			foreach (var message in messages)
+			{
+				var customer = await _customerService.Get(message.CustomerId);
+
+				yield return new SingleMessage
+				{
+					Date = message.CreationDate.ToShortDateString(),
+					Message = message.Description,
+					Name = customerId == message.CustomerId
+						? "Я"
+						: customer.UserName,
+					IsMyMessage = customerId == message.CustomerId
 				};
 			}
 		}

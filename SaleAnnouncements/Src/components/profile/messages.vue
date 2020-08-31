@@ -11,25 +11,17 @@
 			</div>
 
 			<div class="col-sm-8 d-flex flex-column">
-				<h4 class="h4">Переписка по объявлению <b>"{{messageHostOffer.name}}"</b></h4>
+				<h5 class="h5">Переписка по объявлению <b>"{{messageThread.name}}"</b></h5>
 				<div class="message-list">
-					<div class="alert alert-secondary w-75 mb-2 mr-auto" role="alert">
-						<div>Вася, <span class="text-muted">31.08.2020</span></div>
-						<div>Сообщение от Васи</div>
-					</div>
-
-					<div class="alert alert-primary w-75 mb-2 ml-auto" role="alert">
-						<div>Я, <span class="text-muted">31.08.2020</span></div>
-						<div>Мой ответ на сообщение выше</div>
-					</div>
-					<div class="alert alert-secondary w-75 mb-2 mr-auto" role="alert">
-						<div>Вася, <span class="text-muted">31.08.2020</span></div>
-						<div>Сообщение от Васи</div>
-					</div>
-
-					<div class="alert alert-primary w-75 mb-2 ml-auto" role="alert">
-						<div>Я, <span class="text-muted">31.08.2020</span></div>
-						<div>Мой ответ на сообщение выше</div>
+					<div v-for="message in messageThread.messages">
+						<div class="alert alert-primary w-75 mb-2 ml-auto" role="alert" v-if="message.isMyMessage">
+							<div>{{message.name}}, <span class="text-muted">{{message.date}}</span></div>
+							<div>{{message.message}}</div>
+						</div>
+						<div class="alert alert-secondary w-75 mb-2 mr-auto" role="alert" v-else>
+							<div>{{message.name}}, <span class="text-muted">{{message.date}}</span></div>
+							<div>{{message.message}}</div>
+						</div>
 					</div>
 				</div>
 

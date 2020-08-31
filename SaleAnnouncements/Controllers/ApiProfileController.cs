@@ -146,5 +146,23 @@ namespace SaleAnnouncements.Controllers
 				ContractResolver = new CamelCasePropertyNamesContractResolver()
 			}));
 		}
+
+		[HttpGet]
+		[Route("getMessageThread")]
+		public async Task<IActionResult> GetMessageThread(Guid customerId, Guid parentMessageId)
+		{
+			var currentCustomerId = await _customerService.GetCustomerId(User.Identity.Name!);
+			if (customerId != currentCustomerId)
+			{
+				return BadRequest("Получен запрос от постороннего пользователя");
+			}
+
+			var result = await _messageService.GetMessageThread(customerId, parentMessageId);
+
+			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
+			{
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
+			}));
+		}
 	}
 }
