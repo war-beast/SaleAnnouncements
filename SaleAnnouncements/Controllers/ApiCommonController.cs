@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SaleAnnouncements.BLL.Dto;
 using SaleAnnouncements.BLL.Interfaces;
 using SaleAnnouncements.BLL.Model;
 using SaleAnnouncements.Models;
@@ -19,6 +20,7 @@ namespace SaleAnnouncements.Controllers
 		private readonly ICategoryService _categoryService;
 		private readonly IOfferStatusService _offerStatusService;
 		private readonly IOfferService _offerService;
+		private readonly IMessageService _messageService;
 
 		#endregion
 
@@ -26,11 +28,13 @@ namespace SaleAnnouncements.Controllers
 
 		public ApiCommonController(ICategoryService categoryService, 
 			IOfferStatusService offerStatusService, 
-			IOfferService offerService)
+			IOfferService offerService, 
+			IMessageService messageService)
 		{
 			_categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
 			_offerStatusService = offerStatusService ?? throw new ArgumentNullException(nameof(offerStatusService));
 			_offerService = offerService ?? throw new ArgumentNullException(nameof(offerService));
+			_messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
 		}
 
 		#endregion
@@ -85,11 +89,7 @@ namespace SaleAnnouncements.Controllers
 		[Route("saveMessage")]
 		public async Task<IActionResult> SaveMessage([FromBody] MessageBindingModel model)
 		{
-			Result result = new Result
-			{
-				IsSuccess = true,
-				EntityId = model.OfferId
-			};
+			Result result;
 
 			if (!ModelState.IsValid)
 			{
@@ -105,6 +105,16 @@ namespace SaleAnnouncements.Controllers
 					ContractResolver = new CamelCasePropertyNamesContractResolver()
 				}));
 			}
+
+			var messageDto = new MessageDto
+			{
+				 Description = model.Message,
+				 CustomerId = model.CurrentCustomerId,
+				 CompanionId = model.OfferOwnerId,
+				 Subject = (await _offerService.Get(model.OfferId)).Title
+			};
+
+			result = await _messageService.SaveMessage(messageDto);
 
 			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
 			{

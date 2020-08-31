@@ -8,12 +8,12 @@ namespace SaleAnnouncements.BLL.Dto
 
 		public string Description { get; set; } = string.Empty;
 
-		public string CustomerId { get; set; } = string.Empty;
+		public Guid CustomerId { get; set; }
 
 		/// <summary>
 		/// ID собеседника
 		/// </summary>
-		public string CompanionId { get; set; } = string.Empty;
+		public Guid CompanionId { get; set; }
 
 		/// <summary>
 		/// ID первого сообщения в диалоге

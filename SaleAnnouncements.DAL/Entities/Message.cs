@@ -13,7 +13,7 @@ namespace SaleAnnouncements.DAL.Entities
 		/// <summary>
 		/// ID собеседника
 		/// </summary>
-		public string CompanionId { get; set; }
+		public Guid CompanionId { get; set; }
 
 		/// <summary>
 		/// ID первого сообщения в диалоге
