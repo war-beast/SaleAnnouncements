@@ -109,6 +109,7 @@ namespace SaleAnnouncements
 			app.UseJwtCookie();
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
+			app.UseResponseCaching();
 
 			app.UseRouting();
 

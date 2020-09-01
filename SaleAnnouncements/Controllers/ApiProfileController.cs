@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SaleAnnouncements.BLL.Dto;
@@ -11,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.WebEncoders.Testing;
 
 namespace SaleAnnouncements.Controllers
 {

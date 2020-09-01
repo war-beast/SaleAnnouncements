@@ -4,7 +4,7 @@ using SaleAnnouncements.Models;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using SaleAnnouncements.BLL.Model.Filters;
+using SaleAnnouncements.BLL.Model;
 
 namespace SaleAnnouncements.Controllers
 {
@@ -14,16 +14,19 @@ namespace SaleAnnouncements.Controllers
 
 		private readonly IHomePageService _homePageService;
 		private readonly ICategoryPageService _categoryPageService;
+		private readonly ISearchService _searchService;
 
 		#endregion
 
 		#region constructor
 
 		public HomeController(IHomePageService homePageService, 
-			ICategoryPageService categoryPageService)
+			ICategoryPageService categoryPageService, 
+			ISearchService searchService)
 		{
 			_homePageService = homePageService ?? throw new ArgumentNullException(nameof(homePageService));
 			_categoryPageService = categoryPageService ?? throw new ArgumentNullException(nameof(categoryPageService));
+			_searchService = searchService ?? throw new ArgumentNullException(nameof(categoryPageService));
 		}
 
 		#endregion
@@ -44,6 +47,26 @@ namespace SaleAnnouncements.Controllers
 		public async Task<IActionResult> Category(Guid id)
 		{
 			var model = await _categoryPageService.GetPage(id, User.Identity.Name);
+			return View(model);
+		}
+
+		[ResponseCache(Duration = 300, VaryByQueryKeys = new[] {"phrase"})]
+		public async Task<IActionResult> Search(string phrase)
+		{
+			#region validation
+
+			if (string.IsNullOrWhiteSpace(phrase))
+			{
+				return View(new SearchResultsViewModel
+				{
+					Title = "",
+					CurrentCustomerId = Guid.Empty
+				});
+			}
+
+			#endregion
+
+			var model = await _searchService.GetSearchResults(phrase, User.Identity.Name);
 			return View(model);
 		}
 

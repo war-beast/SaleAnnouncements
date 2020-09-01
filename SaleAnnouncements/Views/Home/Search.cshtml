@@ -1,0 +1,41 @@
+﻿@model SearchResultsViewModel
+
+@{
+	ViewData["Title"] = $"Поиск по фразе {Model.Title}";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Объявления, в названиях которых встречается "@Model.Title"</h1>
+
+	<form asp-controller="Home" asp-action="Search" method="get">
+		<div class="form-row align-items-center">
+			<div class="col-sm-10 my-1">
+				<label class="sr-only" for="inlineFormInputGroupUsername">Фраза для поиска в названиях объявлений</label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></div>
+					</div>
+					<input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Фраза для поиска в названиях объявлений" name="phrase" id="phrase">
+				</div>
+			</div>
+			<div class="col-auto my-1">
+				<button type="submit" class="btn btn-primary">Найти</button>
+			</div>
+		</div>
+	</form>
+
+	@if (Model.Offers.Any())
+	{
+		await Html.RenderPartialAsync("_OffeersListing", (Model.Offers, Model.CurrentCustomerId));
+	}
+	else
+	{
+		@: Ничего не найдено, попробуйте изменить условия поиска
+	}
+	<div id="vue-app-container"></div>
+</div>
+
+@section Scripts
+{
+	<script src="~/bundle/clearPage.bundle.js"></script>
+}

@@ -1,15 +1,7 @@
-﻿using System;
-using SaleAnnouncements.BLL.Dto;
-using System.Collections.Generic;
-
-namespace SaleAnnouncements.BLL.Model
+﻿namespace SaleAnnouncements.BLL.Model
 {
-	public class CategoryViewModel
+	public class CategoryViewModel : ListingViewModelBase
 	{
-		public string Title { get; set; } = string.Empty;
-
-		public IReadOnlyCollection<OfferDto> Offers { get; set; } = new List<OfferDto>();
-
-		public Guid? CurrentCustomerId { get; set; }
+		
 	}
 }
