@@ -1,24 +1,37 @@
 ﻿import { Vue, Component } from "vue-property-decorator";
 import ApiRequest from "Util/request";
 import { ApiResult } from "Models/apiResult";
-import { MessageTitle, MessageThread, MessagesPageOptions } from "Models/application";
+import { MessageTitle, MessageThread, MessagesPageOptions, SingleMessage } from "Models/application";
+import SendMessageComponent from "Components/profile/sendMessage.vue";
 
 const getMessageTitles = "/api/profile/getCustomerMessages";
 const getMessageThread = "/api/profile/getMessageThread";
 
-@Component
+@Component({
+	components: {
+		sendMessage: SendMessageComponent
+	}
+})
 export default class MessagesComponent extends Vue {
 	private pageOptions: MessagesPageOptions = globalWindowObject.pageOptions;
 
 	private readonly apiRequest: ApiRequest;
-	private messageThread: MessageThread = new MessageThread("", "", []);
+	private messageThread: MessageThread = new MessageThread("", "", [], "");
 	private messageTitles: Array<MessageTitle> = [];
+	private companionId: string = "";
 
 	constructor() {
 		super();
 
 		this.apiRequest = new ApiRequest();
 		setTimeout(() => this.reloadMessages(), 0);
+	}
+
+	public addMessage(message: string) {
+		let todayDate = new Date();
+		let dateString = todayDate.toLocaleDateString();
+		const newMessage = new SingleMessage("Я", dateString, message, true);
+		this.messageThread.messages.push(newMessage);
 	}
 
 	private async reloadMessages() {

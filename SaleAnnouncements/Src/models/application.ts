@@ -76,11 +76,13 @@ export class SingleMessage implements IMessageTitle {
 
 export class MessageThread extends ListingItem {
 	public messages: Array<SingleMessage> = [];
+	public companionId: string;
 
-	constructor(id: string, name: string, messages: Array<SingleMessage>) {
+	constructor(id: string, name: string, messages: Array<SingleMessage>, companionId: string) {
 		super(id, name);
 
 		this.messages = messages;
+		this.companionId = companionId;
 	}
 }
 

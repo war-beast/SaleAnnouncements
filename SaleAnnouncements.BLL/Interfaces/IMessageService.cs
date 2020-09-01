@@ -13,5 +13,7 @@ namespace SaleAnnouncements.BLL.Interfaces
 		Task<IReadOnlyCollection<MessageTitle>> GetUserMessageTitles(Guid customerId);
 
 		Task<MessageThread> GetMessageThread(Guid customerId, Guid parentMessageId);
+
+		Task<Result> SaveMessageReply(MessageDto message);
 	}
 }

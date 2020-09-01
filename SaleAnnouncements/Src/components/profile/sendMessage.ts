@@ -2,21 +2,22 @@
 import ApiRequest from "Util/request";
 import { ApiResult } from "Models/apiResult";
 
-const sendMessageUrl = "/api/profile/sendMessage";
+const sendMessageUrl = "/api/profile/sendMessageReply";
 
 @Component
-export class SendMessageComponent extends Vue {
+export default class SendMessageComponent extends Vue {
 	@Prop()
 	private customerId: string;
 	@Prop()
 	private companionId: string;
 	@Prop()
 	private parentMessageId: string;
+	@Prop()
+	private addMessage: Function;
 
 	private readonly apiRequest: ApiRequest;
-	private message: string;
+	private message: string = "";
 	private sendError: string = "";
-	private sendSuccess: string = "";
 
 	constructor() {
 		super();
@@ -26,7 +27,6 @@ export class SendMessageComponent extends Vue {
 
 	private async send() {
 		this.sendError = "";
-		this.sendSuccess = "";
 
 		if (this.message === "") {
 			this.sendError = "Заполните текст сообщения";
@@ -43,7 +43,7 @@ export class SendMessageComponent extends Vue {
 		await this.apiRequest.postData(sendMessageUrl, JSON.stringify(data))
 			.then((result: ApiResult) => {
 				if (result.success) {
-					this.sendSuccess = "Сообщение отправлено успешно";
+					this.addMessage(this.message);
 					this.message = "";
 				} else {
 					this.sendError = "Произошла ошибка на сервере, не удалось отправить сообщение";

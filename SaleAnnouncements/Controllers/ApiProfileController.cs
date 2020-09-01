@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.WebEncoders.Testing;
 
 namespace SaleAnnouncements.Controllers
 {
@@ -158,6 +159,43 @@ namespace SaleAnnouncements.Controllers
 			}
 
 			var result = await _messageService.GetMessageThread(customerId, parentMessageId);
+
+			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
+			{
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
+			}));
+		}
+
+		[HttpPost]
+		[Route("sendMessageReply")]
+		public async Task<IActionResult> SendMessageReply([FromBody] MessageReplyBindingModel model)
+		{
+			Result result;
+
+			if (!ModelState.IsValid)
+			{
+				result = new Result
+				{
+					IsSuccess = false,
+					EntityId = Guid.Empty,
+					Error = "Ошибка в заполненной форме"
+				};
+
+				return BadRequest(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
+				{
+					ContractResolver = new CamelCasePropertyNamesContractResolver()
+				}));
+			}
+
+			var messageDto = new MessageDto
+			{
+				Description = model.Message,
+				CustomerId = model.CurrentCustomerId,
+				CompanionId = model.CompanionId,
+				ParentId = model.ParentMessageId
+			};
+
+			result = await _messageService.SaveMessage(messageDto);
 
 			return Ok(JsonConvert.SerializeObject(result, Formatting.None, new JsonSerializerSettings
 			{

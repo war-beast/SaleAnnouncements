@@ -49,10 +49,11 @@ export class SingleMessage {
     }
 }
 export class MessageThread extends ListingItem {
-    constructor(id, name, messages) {
+    constructor(id, name, messages, companionId) {
         super(id, name);
         this.messages = [];
         this.messages = messages;
+        this.companionId = companionId;
     }
 }
 export class MessagesPageOptions {

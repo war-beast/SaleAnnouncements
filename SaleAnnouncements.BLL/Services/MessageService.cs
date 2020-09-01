@@ -106,7 +106,7 @@ namespace SaleAnnouncements.BLL.Services
 			var otherMessages = _unitOfWork.Messages
 				.GetAll()
 				.Where(x => x.ParentId == parentMessageId)
-				.OrderByDescending(x => x.CreationDate)
+				.OrderBy(x => x.CreationDate)
 				.ToList();
 			otherMessages.Insert(0, parentMessage);
 
@@ -115,8 +115,42 @@ namespace SaleAnnouncements.BLL.Services
 				Id = parentMessageId,
 				Name = parentMessage.Subject,
 				Messages = await GetMessagesWithCustomers(otherMessages, customerId)
-					.ToListAsync()
+					.ToListAsync(),
+				CompanionId = parentMessage.CustomerId == customerId 
+					? parentMessage.CompanionId 
+					: parentMessage.CustomerId
 			};
+		}
+
+		public async Task<Result> SaveMessageReply(MessageDto message)
+		{
+			var result = new Result
+			{
+				IsSuccess = true
+			};
+
+			var parentMessage = await _unitOfWork.Messages.Get(message.ParentId!.Value);
+			message.Subject = parentMessage.Subject;
+
+			try
+			{
+				_unitOfWork.Messages.Create(_mapper.Map<Message>(message));
+				await _unitOfWork.SaveAsync();
+			}
+			catch (Exception exc)
+			{
+				var error = $"Не удалось сохранить ответ на сообщение Id: {message.ParentId}. {exc.Message}";
+
+				_logger.LogError(error);
+				result = new Result
+				{
+					IsSuccess = false,
+					EntityId = Guid.Empty,
+					Error = error
+				};
+			}
+
+			return result;
 		}
 
 		#region ptivate methods
