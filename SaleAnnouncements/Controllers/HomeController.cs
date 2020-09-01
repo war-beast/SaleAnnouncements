@@ -31,7 +31,7 @@ namespace SaleAnnouncements.Controllers
 
 		#endregion
 
-		[ResponseCache(Duration = 300)]
+		[ResponseCache(CacheProfileName = "Default")]
 		public async Task<IActionResult> Index()
 		{
 			var model = await _homePageService.GetPageModel();
@@ -43,14 +43,14 @@ namespace SaleAnnouncements.Controllers
 			return View();
 		}
 
-		[ResponseCache(Duration = 300)]
+		[ResponseCache(CacheProfileName = "Default")]
 		public async Task<IActionResult> Category(Guid id)
 		{
 			var model = await _categoryPageService.GetPage(id, User.Identity.Name);
 			return View(model);
 		}
 
-		[ResponseCache(Duration = 300, VaryByQueryKeys = new[] {"phrase"})]
+		[ResponseCache(CacheProfileName = "Default", VaryByQueryKeys = new[] {"phrase"})]
 		public async Task<IActionResult> Search(string phrase)
 		{
 			#region validation

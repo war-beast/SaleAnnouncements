@@ -12,6 +12,10 @@ using SaleAnnouncements.DAL.Data;
 using SaleAnnouncements.Util;
 using System.IO;
 using System.Net;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using SaleAnnouncements.Extensions;
 
 namespace SaleAnnouncements
 {
@@ -91,9 +95,17 @@ namespace SaleAnnouncements
 
 			ConfigureAutomapper(services);
 			ConfigureCustomServices(services);
+
+			var defaultCacheProfile = new CacheProfile();
+			Configuration.GetSection("CacheProfiles:Default").Bind(defaultCacheProfile);
+
+			services.AddMvc(option =>
+			{
+				option.CacheProfiles.Add("Default", defaultCacheProfile);
+			});
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
 		{
 			if (env.IsDevelopment())
 			{
@@ -106,9 +118,20 @@ namespace SaleAnnouncements
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+
+			loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "application-log.txt"));
+
 			app.UseJwtCookie();
 			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+			app.UseStaticFiles(new StaticFileOptions()
+			{
+				OnPrepareResponse = ctx =>
+				{
+					ctx.Context.Response.Headers.Add("Cache-Control", "public,max-age=1200");
+				}
+			});
+
 			app.UseResponseCaching();
 
 			app.UseRouting();
