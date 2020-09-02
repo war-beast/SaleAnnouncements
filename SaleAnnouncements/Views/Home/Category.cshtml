@@ -6,17 +6,20 @@
 
 <div class="text-center">
 	<h1 class="display-4">Объявления в категории: @Model.Title</h1>
-	@if(Model.Offers.Any()){
-		await Html.RenderPartialAsync("_OffeersListing", (Model.Offers, Model.CurrentCustomerId));
-	}
-	else
-	{
-		@: В этой категории нет объявлений
-	}
-	<div id="vue-app-container"></div>
+
+	<div id="vue-app-container">
+		@if (Model.Offers.Any())
+		{
+			await Html.RenderPartialAsync("_OffeersListing", (Model.Offers, Model.CurrentCustomerId));
+		}
+		else
+		{
+			@: В этой категории нет объявлений
+		}
+	</div>
 </div>
 
 @section Scripts
 {
-	<script src="~/bundle/clearPage.bundle.js"></script>
+	<script src="~/bundle/listingPage.bundle.js"></script>
 }

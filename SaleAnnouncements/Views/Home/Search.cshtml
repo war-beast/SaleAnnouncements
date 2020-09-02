@@ -23,19 +23,19 @@
 			</div>
 		</div>
 	</form>
-
-	@if (Model.Offers.Any())
-	{
-		await Html.RenderPartialAsync("_OffeersListing", (Model.Offers, Model.CurrentCustomerId));
-	}
-	else
-	{
-		@: Ничего не найдено, попробуйте изменить условия поиска
-	}
-	<div id="vue-app-container"></div>
+	<div id="vue-app-container">
+		@if (Model.Offers.Any())
+		{
+			await Html.RenderPartialAsync("_OffeersListing", (Model.Offers, Model.CurrentCustomerId));
+		}
+		else
+		{
+			@: Ничего не найдено, попробуйте изменить условия поиска
+		}
+	</div>
 </div>
 
 @section Scripts
 {
-	<script src="~/bundle/clearPage.bundle.js"></script>
+	<script src="~/bundle/listingPage.bundle.js"></script>
 }

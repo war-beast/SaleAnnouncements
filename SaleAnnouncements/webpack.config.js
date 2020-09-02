@@ -17,7 +17,8 @@ let configuration = {
 		clearPage: "./Src/pages/clear/init.js",
 		newOfferPage: "./Src/Pages/profile/newOffer.js",
 		addStatusPage: "./Src/Pages/profile/addStatus.js",
-		messagesPage: "./Src/Pages/profile/messages.js"
+		messagesPage: "./Src/Pages/profile/messages.js",
+		listingPage: "./Src/Pages/listing/init.js"
 	},
 	output: {
 		filename: "[name].bundle.js",

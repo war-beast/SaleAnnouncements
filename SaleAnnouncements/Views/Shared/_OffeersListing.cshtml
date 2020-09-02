@@ -15,11 +15,7 @@
 					{
 						if (image.Image != null)
 						{
-							//Здесь реализован просмотр полноразмерной версии фото. Реализовано через JQuery только из-за простоты и меньшего объёма кода.
-							//На реальном проекте я бы сделал это на VueJS
-							<a asp-controller="Common" asp-action="GetPhoto" asp-route-id="@image.Id" class="dialog mx-1 my-1">
-								<img src="data:image/jpeg;base64,@(Convert.ToBase64String(image.Image))" />
-							</a>
+							<photo-item v-bind:id="'@image.Id'"></photo-item>
 						}
 					}
 				</div>
@@ -31,8 +27,7 @@
 						Телефон:
 						@if (User.Identity.IsAuthenticated)
 						{
-							//Показ скрытого телефона тоже реализован на JQuery для простоты. Если время останется переделаю на VueJS
-							<a href="/api/common/getOfferPhoneNumber?id=@offer.Id" class="phone-number text-decoration-none">показать</a>
+							<phone-link v-bind:id="'@offer.Id'" />
 						}
 						else
 						{
@@ -52,6 +47,8 @@
 		</div>
 	}
 </div>
+
+<photo-modal />
 
 <!-- Message modal -->
 <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">

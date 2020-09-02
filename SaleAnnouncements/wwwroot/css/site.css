@@ -127,6 +127,16 @@ body {
 	overflow-y: scroll;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
+.vue-modals .show {
+	display: block;
+	padding-right: 15px;
+	background: rgba(0,0,0,0.5);
+}
+
 @media (max-width: 767px) {
 	.card-body {
 		flex-direction: column;

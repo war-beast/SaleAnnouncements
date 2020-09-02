@@ -16,7 +16,8 @@
 			"Util/*": [ "util/*" ],
 			"Interfaces/*": [ "interfaces/*" ],
 			"Modules/*": [ "modules/*" ],
-			"Pages/*":  ["pages/*"] 
+			"Pages/*": [ "pages/*" ],
+			"Components/*": ["components/*"]
 		}
 	},
 	"exclude": [

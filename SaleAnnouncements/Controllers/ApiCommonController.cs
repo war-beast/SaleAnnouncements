@@ -21,6 +21,7 @@ namespace SaleAnnouncements.Controllers
 		private readonly IOfferStatusService _offerStatusService;
 		private readonly IOfferService _offerService;
 		private readonly IMessageService _messageService;
+		private readonly IPhotoService _photoService;
 
 		#endregion
 
@@ -29,12 +30,14 @@ namespace SaleAnnouncements.Controllers
 		public ApiCommonController(ICategoryService categoryService, 
 			IOfferStatusService offerStatusService, 
 			IOfferService offerService, 
-			IMessageService messageService)
+			IMessageService messageService, 
+			IPhotoService photoService)
 		{
 			_categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
 			_offerStatusService = offerStatusService ?? throw new ArgumentNullException(nameof(offerStatusService));
 			_offerService = offerService ?? throw new ArgumentNullException(nameof(offerService));
 			_messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
+			_photoService = photoService ?? throw new ArgumentNullException(nameof(photoService));
 		}
 
 		#endregion
@@ -120,6 +123,17 @@ namespace SaleAnnouncements.Controllers
 			{
 				ContractResolver = new CamelCasePropertyNamesContractResolver()
 			}));
+		}
+
+		[HttpGet]
+		[Route("getPhoto")]
+		public async Task<IActionResult> GetPhoto(Guid id)
+		{
+			var model = await _photoService.Get(id);
+			if (model?.Image == null)
+				return BadRequest("изображение не найдено");
+
+			return Ok(Convert.ToBase64String(model.Image));
 		}
 	}
 }

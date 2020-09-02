@@ -5,23 +5,6 @@ var globalWindowObject = window;
 $(document).ready(function () {
 	$.ajaxSetup({ cache: false });
 
-	$(".dialog").click(function (e) {
-		e.preventDefault();
-		$("#photoModalCenter .modal-body").html("Загрузка...");
-		$("#photoModalCenter .modal-body").load($(this).attr("href"));
-		$("#photoModalCenter").modal("show");
-	});
-
-	$(".phone-number").click(function (e) {
-		e.preventDefault();
-		let href = $(this).attr("href");
-
-		if (href !== "") {
-			$(this).load(href);
-			$(this).attr("href", "");
-		}
-	});
-
 	$(".message-btn").click(function (e) {
 		e.preventDefault();
 		$("#OfferOwnerId").val($(this).data("ownerid"));
