@@ -2,20 +2,19 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using SaleAnnouncements.DAL.Data;
 using SaleAnnouncements.Util;
 using System.IO;
 using System.Net;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using SaleAnnouncements.Extensions;
 
 namespace SaleAnnouncements
 {
@@ -118,9 +117,6 @@ namespace SaleAnnouncements
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
-
-
-			loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "application-log.txt"));
 
 			app.UseJwtCookie();
 			app.UseHttpsRedirection();
