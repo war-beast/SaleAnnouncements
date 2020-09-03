@@ -15,6 +15,8 @@ using SaleAnnouncements.DAL.Data;
 using SaleAnnouncements.Util;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SaleAnnouncements
 {
@@ -118,6 +120,22 @@ namespace SaleAnnouncements
 				app.UseHsts();
 			}
 
+			app.UseStatusCodePages(context =>
+			{
+				var response = context.HttpContext.Response;
+
+				var isNotApiRequest = !context.HttpContext.Request.Path.StartsWithSegments("/api");
+				var forbidden = response.StatusCode == (int)HttpStatusCode.Forbidden;
+				var unauthorized = response.StatusCode == (int)HttpStatusCode.Unauthorized;
+
+				if (isNotApiRequest && (unauthorized || forbidden))
+				{
+					response.Redirect("/Identity/Account/Login");
+				}
+
+				return Task.CompletedTask;
+			});
+
 			app.UseJwtCookie();
 			app.UseHttpsRedirection();
 			app.UseStaticFiles(new StaticFileOptions()
@@ -134,20 +152,6 @@ namespace SaleAnnouncements
 
 			app.UseAuthentication();
 			app.UseAuthorization();
-
-			app.UseStatusCodePages(async context =>
-			{
-				var response = context.HttpContext.Response;
-
-				var isNotApiRequest = !context.HttpContext.Request.Path.StartsWithSegments("/api");
-				var forbidden = response.StatusCode == (int)HttpStatusCode.Forbidden;
-				var unauthorized = response.StatusCode == (int)HttpStatusCode.Unauthorized;
-
-				if (isNotApiRequest && (unauthorized || forbidden))
-				{
-					response.Redirect("/Identity/Account/SignIn");
-				}
-			});
 
 			app.UseEndpoints(endpoints =>
 			{
