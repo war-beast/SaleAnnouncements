@@ -1,5 +1,5 @@
 ﻿<template>
-	<button class="btn btn-primary message-btn" role="button" type="button" v-on:click="showModal">
+	<button class="btn btn-primary" role="button" type="button" v-on:click="showModal">
 		Написать сообщение автору
 	</button>
 </template>

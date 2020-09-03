@@ -85,6 +85,10 @@ export class OfferMessageBuilder {
         this.offerMessage.offerOwnerId = ownerId;
         return this;
     }
+    setMessage(message) {
+        this.offerMessage.message = message;
+        return this;
+    }
     build() {
         return this.offerMessage;
     }

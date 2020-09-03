@@ -27,7 +27,7 @@
 						Телефон:
 						@if (User.Identity.IsAuthenticated)
 						{
-							<phone-link v-bind:id="'@offer.Id'" />
+							<phone-link v-bind:id="'@offer.Id'"></phone-link>
 						}
 						else
 						{
@@ -49,33 +49,5 @@
 	}
 </div>
 
-<photo-modal />
-
-<!-- Message modal -->
-<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Новое сообщение</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="Message">Текст сообщения</label>
-					<textarea id="Message" name="Message" class="form-control"></textarea>
-					<span class="text-danger" id="submittingError"></span>
-					<span class="text-success" id="submittingSuccess"></span>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<input type="hidden" value="@Model.currentCustomerId" id="CurrentCustomerId" name="CurrentCustomerId" />
-				<input type="hidden" id="OfferOwnerId" name="OfferOwnerId" />
-				<input type="hidden" id="OfferId" name="OfferId" />
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-				<button type="button" class="btn btn-primary" id="sendMessage">Отправить</button>
-			</div>
-		</div>
-	</div>
-</div>
+<photo-modal></photo-modal>
+<message-modal></message-modal>

@@ -108,18 +108,23 @@ export class OfferMessageBuilder {
 		this.offerMessage = new OfferMessage();
 	}
 
-	public setCustomerId(customerId: string) {
+	public setCustomerId(customerId: string): OfferMessageBuilder {
 		this.offerMessage.currentCustomerId = customerId;
 		return this;
 	}
 
-	public setOfferId(offerId: string) {
+	public setOfferId(offerId: string): OfferMessageBuilder {
 		this.offerMessage.offerId = offerId;
 		return this;
 	}
 
-	public setOfferOwnerId(ownerId: string) {
+	public setOfferOwnerId(ownerId: string): OfferMessageBuilder {
 		this.offerMessage.offerOwnerId = ownerId;
+		return this;
+	}
+
+	public setMessage(message: string): OfferMessageBuilder {
+		this.offerMessage.message = message;
 		return this;
 	}
 
