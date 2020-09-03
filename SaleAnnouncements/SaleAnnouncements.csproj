@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Src\components\listing\offerMessageButtonComponent.ts" />
     <None Remove="Src\components\listing\phoneLinkComponent.ts" />
     <None Remove="Src\components\listing\photoItemComponent.ts" />
     <None Remove="Src\components\profile\addStatus.ts" />
@@ -55,6 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="Src\components\listing\offerMessageButtonComponent.ts" />
     <TypeScriptCompile Include="Src\components\listing\phoneLinkComponent.ts" />
     <TypeScriptCompile Include="Src\components\listing\photoItemComponent.ts" />
     <TypeScriptCompile Include="Src\components\profile\addStatus.ts" />

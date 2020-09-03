@@ -89,3 +89,41 @@ export class MessageThread extends ListingItem {
 export class MessagesPageOptions {
 	public currentCustomerId: string;
 }
+
+export class OfferMessage {
+	public currentCustomerId: string | null = null;
+	public offerId: string | null = null;
+	public offerOwnerId: string | null = null;
+	public message: string | null = null;
+
+	public static createBuilder(): OfferMessageBuilder {
+		return new OfferMessageBuilder();
+	}
+}
+
+export class OfferMessageBuilder {
+	private offerMessage: OfferMessage;
+
+	constructor() {
+		this.offerMessage = new OfferMessage();
+	}
+
+	public setCustomerId(customerId: string) {
+		this.offerMessage.currentCustomerId = customerId;
+		return this;
+	}
+
+	public setOfferId(offerId: string) {
+		this.offerMessage.offerId = offerId;
+		return this;
+	}
+
+	public setOfferOwnerId(ownerId: string) {
+		this.offerMessage.offerOwnerId = ownerId;
+		return this;
+	}
+
+	public build(): OfferMessage {
+		return this.offerMessage;
+	}
+}

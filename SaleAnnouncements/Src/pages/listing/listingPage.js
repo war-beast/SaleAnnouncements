@@ -3,6 +3,7 @@ import BasePage from "Pages/basePage";
 import PhoneLink from "Components/listing/phoneLinkComponent.vue";
 import PhotoItemComponent from "Components/listing/photoItemComponent.vue";
 import PhotoModalComponent from "Components/listing/photoModal.vue";
+import OfferMessageButtonComponent from "Components/listing/offerMessageButtonComponent.vue";
 export default class ListingPage extends BasePage {
     constructor() {
         super();
@@ -15,7 +16,8 @@ export default class ListingPage extends BasePage {
             components: {
                 "phone-link": PhoneLink,
                 "photo-item": PhotoItemComponent,
-                "photo-modal": PhotoModalComponent
+                "photo-modal": PhotoModalComponent,
+                "message-button": OfferMessageButtonComponent
             }
         });
     }

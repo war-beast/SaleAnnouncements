@@ -58,4 +58,35 @@ export class MessageThread extends ListingItem {
 }
 export class MessagesPageOptions {
 }
+export class OfferMessage {
+    constructor() {
+        this.currentCustomerId = null;
+        this.offerId = null;
+        this.offerOwnerId = null;
+        this.message = null;
+    }
+    static createBuilder() {
+        return new OfferMessageBuilder();
+    }
+}
+export class OfferMessageBuilder {
+    constructor() {
+        this.offerMessage = new OfferMessage();
+    }
+    setCustomerId(customerId) {
+        this.offerMessage.currentCustomerId = customerId;
+        return this;
+    }
+    setOfferId(offerId) {
+        this.offerMessage.offerId = offerId;
+        return this;
+    }
+    setOfferOwnerId(ownerId) {
+        this.offerMessage.offerOwnerId = ownerId;
+        return this;
+    }
+    build() {
+        return this.offerMessage;
+    }
+}
 //# sourceMappingURL=application.js.map

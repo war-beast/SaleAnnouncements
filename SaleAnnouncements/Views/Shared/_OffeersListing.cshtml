@@ -35,11 +35,12 @@
 						}
 					</p>
 					<p>
-						@if (Model.currentCustomerId != offer.CustomerId)
+						@if (Model.currentCustomerId != offer.CustomerId && User.Identity.IsAuthenticated)
 						{
-							<button class="btn btn-primary message-btn" role="button" type="button" data-ownerid="@offer.CustomerId" data-offerid="@offer.Id" data-toggle="modal" data-target="#messageModal">
-								Написать сообщение автору
-							</button>
+							<message-button v-bind:offer-owner-id="'@offer.CustomerId'"
+							                v-bind:offer-id="'@offer.Id'"
+							                v-bind:current-customer-id="'@Model.currentCustomerId'">
+							</message-button>
 						}
 					</p>
 				</blockquote>
