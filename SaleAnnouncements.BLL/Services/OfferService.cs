@@ -76,7 +76,7 @@ namespace SaleAnnouncements.BLL.Services
 				IsSuccess = true
 			};
 
-			offer.CustomerId = await GetCurrentUserId(userEmail);
+			offer.CustomerId = await _customerService.GetCustomerId(userEmail);
 
 			try
 			{
@@ -180,31 +180,6 @@ namespace SaleAnnouncements.BLL.Services
 
 		#region private methods
 
-		private async Task<Guid> GetCurrentUserId(string email)
-		{
-			#region validation
-
-			if (string.IsNullOrWhiteSpace(email))
-				throw new ArgumentNullException(nameof(email));
-
-			#endregion
-
-			var customersFilter = new CustomerFilterBuilder()
-				.SetEmail(email)
-				.Build();
-			var customer = await _customerService.GetFiltered(customersFilter);
-
-			if (customer.Count == 0)
-			{
-				var message = $"Не удалось получить пользователя по Email: {email}";
-
-				_logger.LogError(message);
-				throw new InvalidOperationException(message);
-			}
-
-			return customer.First().Id!.Value;
-		}
-
 		private async IAsyncEnumerable<OfferDto> GetOffersWithCategory(IList<OfferDto> offers)
 		{
 			foreach (var offer in offers)
@@ -227,7 +202,6 @@ namespace SaleAnnouncements.BLL.Services
 			foreach (var amount in selectedStatusAmounts)
 			{
 				offer.Sort += (int)amount;
-				var coreOffer = _mapper.Map<Offer>(offer);
 				_unitOfWork.Offers.Update(_mapper.Map<Offer>(offer));
 			}
 		}

@@ -86,7 +86,7 @@ namespace SaleAnnouncements.BLL.Services
 			{
 				await _unitOfWork.SaveAsync();
 			}
-			catch (Exception exc)
+			catch (Exception)
 			{
 				var user = await _userManager.FindByIdAsync(userId);
 				await _userManager.DeleteAsync(user);
