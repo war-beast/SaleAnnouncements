@@ -41,7 +41,9 @@ let ProfileWidget = class ProfileWidget extends Vue {
     }
     checkLoggedStatus() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.apiRequest.getData(logoutUrl)
+            if (this.userEmail === null)
+                return;
+            yield this.apiRequest.getData(userInfoUrl)
                 .then((result) => {
                 if (!result.success) {
                     this.logUserOut();
